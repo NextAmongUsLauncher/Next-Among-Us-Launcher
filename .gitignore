@@ -1,7 +1,7 @@
-/.idea
-/.vs
-/.vscode
-NextAmongUsLauncher/bin
-NextAmongUsLauncher/obj
-NextAmongUsLauncher.Core/bin
-NextAmongUsLauncher.Core/obj
+
+*.editorconfig
+
+.vs/
+
+NAUL/obj/
+NAUL/bin/

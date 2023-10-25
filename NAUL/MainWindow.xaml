@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="NAUL.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:NAUL"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Window.SystemBackdrop>
+        <DesktopAcrylicBackdrop/>
+    </Window.SystemBackdrop>
+
+    <Grid>
+        <Border x:Name="AppTitleBar"
+            Grid.Column="0"
+            Height="48"
+            VerticalAlignment="Top">
+            <Grid Width="Auto" Height="Auto" ColumnDefinitions="48, Auto, *" RowDefinitions="48, Auto, *">
+                <Image Grid.Column="0" Source="/Assets/LOGO.ico" Height="22" />
+                <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="Next Among Us Launch" />
+            </Grid>
+        </Border>
+
+    </Grid>
+
+</Window>

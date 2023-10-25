@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "NAUL (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "NAUL (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
