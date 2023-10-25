@@ -20,6 +20,7 @@
   <ItemGroup>
     <None Remove="Page_Play.xaml" />
     <None Remove="Page_Setting.xaml" />
+    <None Remove="Page_Version.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +36,11 @@
   -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Page_Version.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Page_Play.xaml">

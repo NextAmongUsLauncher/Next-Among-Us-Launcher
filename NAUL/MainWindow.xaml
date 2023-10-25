@@ -19,7 +19,7 @@
             VerticalAlignment="Top">
             <Grid ColumnDefinitions="52, Auto, *">
                 <Image Grid.Column="0" Source="/Assets/LOGO.ico" Height="22" />
-                <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="Next Among Us Launch" />
+                <TextBlock x:Name="WindowTitle" Grid.Column="1" VerticalAlignment="Center" Text="Next Among Us Launch" />
             </Grid>
         </Border>
         <NavigationView x:Name="GloabalNavigation"
@@ -31,6 +31,7 @@
                         SelectionChanged="GloabalNavigation_SelectionChanged">
             <NavigationView.MenuItems>
                 <NavigationViewItem Icon="Play" Content="Play" Tag="Play" />
+                <NavigationViewItem Icon="Save" Content="Version" Tag="Version" />
             </NavigationView.MenuItems>
             <Frame x:Name="contentFrame"/>
         </NavigationView>

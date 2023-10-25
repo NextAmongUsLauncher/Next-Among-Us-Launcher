@@ -47,10 +47,10 @@ public sealed partial class MainWindow : Window
 
     private void GloabalNavigation_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
-        
         Type pageType = args.IsSettingsSelected ? typeof(Page_Setting) : ((NavigationViewItem)args.SelectedItem).Tag switch
         {
             "Play" => typeof(Page_Play),
+            "Version" => typeof(Page_Version),
             _ => typeof(Page_Play),
         };
 
