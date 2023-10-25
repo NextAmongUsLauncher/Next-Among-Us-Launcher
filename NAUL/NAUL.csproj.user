@@ -5,6 +5,12 @@
     <None Update="App.xaml">
       <SubType>Designer</SubType>
     </None>
+    <Page Update="Page_Play.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Page_Setting.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <None Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </None>

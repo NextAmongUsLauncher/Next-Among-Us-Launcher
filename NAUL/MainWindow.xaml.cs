@@ -44,4 +44,16 @@ public sealed partial class MainWindow : Window
         this.SetTitleBar(AppTitleBar);
 
     }
+
+    private void GloabalNavigation_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+    {
+        
+        Type pageType = args.IsSettingsSelected ? typeof(Page_Setting) : ((NavigationViewItem)args.SelectedItem).Tag switch
+        {
+            "Play" => typeof(Page_Play),
+            _ => typeof(Page_Play),
+        };
+
+        _ = contentFrame.Navigate(pageType);
+    }
 }

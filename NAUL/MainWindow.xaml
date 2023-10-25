@@ -12,17 +12,28 @@
         <DesktopAcrylicBackdrop/>
     </Window.SystemBackdrop>
 
-    <Grid>
+    <Grid RowDefinitions="48, *">
         <Border x:Name="AppTitleBar"
-            Grid.Column="0"
-            Height="48"
+                Grid.Row="0"
+                Height="48"
             VerticalAlignment="Top">
-            <Grid Width="Auto" Height="Auto" ColumnDefinitions="48, Auto, *" RowDefinitions="48, Auto, *">
+            <Grid ColumnDefinitions="52, Auto, *">
                 <Image Grid.Column="0" Source="/Assets/LOGO.ico" Height="22" />
                 <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="Next Among Us Launch" />
             </Grid>
         </Border>
-
+        <NavigationView x:Name="GloabalNavigation"
+                        Grid.Row="1"
+                        IsBackButtonVisible="Collapsed"
+                        PaneDisplayMode="LeftCompact"
+                        SelectionFollowsFocus="Enabled"
+                        IsTabStop="False"
+                        SelectionChanged="GloabalNavigation_SelectionChanged">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Icon="Play" Content="Play" Tag="Play" />
+            </NavigationView.MenuItems>
+            <Frame x:Name="contentFrame"/>
+        </NavigationView>
     </Grid>
 
 </Window>
