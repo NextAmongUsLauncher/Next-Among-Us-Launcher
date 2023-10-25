@@ -30,9 +30,12 @@
                         IsTabStop="False"
                         SelectionChanged="GloabalNavigation_SelectionChanged">
             <NavigationView.MenuItems>
-                <NavigationViewItem Icon="Play" Content="Play" Tag="Play" />
-                <NavigationViewItem Icon="Save" Content="Version" Tag="Version" />
+                <NavigationViewItem Content="Play" Tag="Play" Icon="Play" />
+                <NavigationViewItem Content="Version" Tag="Version" Icon="Library" />
             </NavigationView.MenuItems>
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem Content="About" Tag="About" Icon="ContactInfo" />
+            </NavigationView.FooterMenuItems>
             <Frame x:Name="contentFrame"/>
         </NavigationView>
     </Grid>

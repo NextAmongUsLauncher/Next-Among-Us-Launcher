@@ -51,6 +51,7 @@ public sealed partial class MainWindow : Window
         {
             "Play" => typeof(Page_Play),
             "Version" => typeof(Page_Version),
+            "About" => typeof(Page_About),
             _ => typeof(Page_Play),
         };
 
