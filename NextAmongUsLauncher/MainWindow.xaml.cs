@@ -24,9 +24,10 @@ namespace NextAmongUsLauncher
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        private SystemBackdrop SystemBackdrop;
+        public new static MainWindow Current { get; private set; }
         public MainWindow()
         {
+            Current = this;
             InitializeComponent();
             SetTitle();
         }
