@@ -9,7 +9,14 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-
+    <Grid RowDefinitions="Auto, *">
+        <StackPanel
+            Margin="70,100,0,0"
+            VerticalAlignment="Center"
+            Orientation="Vertical">
+            <TextBlock Grid.Row="0" Text="Next" FontSize="85"></TextBlock>
+            <TextBlock Grid.Row="1" Text="Among Us Launcher" FontSize="50"></TextBlock>
+        </StackPanel>
     </Grid>
+
 </Page>
