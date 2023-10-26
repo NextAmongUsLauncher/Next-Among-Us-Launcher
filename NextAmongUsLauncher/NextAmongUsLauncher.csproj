@@ -12,12 +12,9 @@
     <EnableMsixTooling>true</EnableMsixTooling>
     <WindowsPackageType>None</WindowsPackageType>
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ApplicationIcon>LOGO.ico</ApplicationIcon>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <Resource Include="NextAmongUsLauncher.Resource/**"/>
-    <ProjectReference Include="NextAmongUsLauncher.Core/NextAmongUsLauncher.Core.csproj"/>
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
@@ -28,24 +25,34 @@
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Core" Version="7.1.2" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231008000" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.25936-preview" />
-    <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\NextAmongUsLauncher.Core\NextAmongUsLauncher.Core.csproj" />
   </ItemGroup>
 
-  <!-- 
+  <ItemGroup>
+    <Manifest Include="$(ApplicationManifest)" />
+    <Content Include="../NextAmongUsLauncher.Resource/**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+<!--  &lt;!&ndash; 
     Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
     Tools extension to be activated for this project even if the Windows App SDK Nuget
     package has not yet been restored.
-  -->
+  &ndash;&gt;
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix"/>
   </ItemGroup>
 
-  <!-- 
+  &lt;!&ndash; 
     Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution 
     Explorer "Package and Publish" context menu entry to be enabled for this project even if 
     the Windows App SDK Nuget package has not yet been restored.
-  -->
+  &ndash;&gt;
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
-  </PropertyGroup>
+  </PropertyGroup>-->
 </Project>
