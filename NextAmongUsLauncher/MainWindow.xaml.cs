@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Windows.Graphics;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -12,38 +13,74 @@ namespace NextAmongUsLauncher;
 public sealed partial class MainWindow : Window
 {
     public new static MainWindow Current { get; private set; }
-    public static (Type, object) CurrentPage { get; private set; }
+    public static NavigationViewItem CurrentPage { get; private set; }
     public ModManager ModManager;
+    public GameFinder GameFinder;
+
+    private readonly Dictionary<Type, NavigationViewItem> AllPageAndTag;
 
     public MainWindow()
     {
         Current = this;
         InitializeComponent();
 
+        AllPageAndTag = new Dictionary<Type, NavigationViewItem>
+        { 
+            { typeof(Page_Play), PlayerPage},
+            { typeof(Page_Version), VersionPage},
+            { typeof(Page_About), AboutPage},
+            { typeof(Page_Setting), SettingPage}
+        };
+        
         SystemBackdrop = new DesktopAcrylicBackdrop();
 
         AppWindow.MoveAndResize(new RectInt32(335, 165, 1250, 750));
 
         ExtendsContentIntoTitleBar = true;
         SetTitleBar(AppTitleBar);
-        
+
+        if (CurrentPage == null)
+        {
+            Navigate(PlayerPage);
+        }
+    }
+
+    internal void InitializeCore()
+    {
         ModManager = new ModManager();
+        GameFinder = new GameFinder();
     }
 
     private void Main_Navigation_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
         var SelectedItem = (NavigationViewItem)args.SelectedItem;
         
-        var pageType = SelectedItem.Tag switch
-        {
-            "Play" => typeof(Page_Play),
-            "Version" => typeof(Page_Version),
-            "About" => typeof(Page_About),
-            "Setting" => typeof(Page_Setting),
-            _ => null
-        };
+        Navigate(SelectedItem);
+    }
+
+    private void Navigate(Type type)
+    {
+        var item = AllPageAndTag[type];
         
-        CurrentPage = (pageType, SelectedItem.Tag);
-        contentFrame.Navigate(pageType);
+        if ((NavigationViewItem)Main_NavigationView.SelectedItem != item)
+        {
+            Main_NavigationView.SelectedItem = item;
+        }
+        
+        CurrentPage = item;
+        contentFrame.Navigate(type);
+    }
+
+    private void Navigate(NavigationViewItem item)
+    {
+        var type = AllPageAndTag.FirstOrDefault(n => n.Value == item).Key;
+        
+        if ((NavigationViewItem)Main_NavigationView.SelectedItem != item)
+        {
+            Main_NavigationView.SelectedItem = item;
+        }
+        
+        CurrentPage = item;
+        contentFrame.Navigate(type);
     }
 }

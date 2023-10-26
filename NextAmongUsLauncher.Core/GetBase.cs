@@ -1,7 +1,13 @@
 namespace NextAmongUsLauncher.Core;
 
-public class GetBase<T> where T : new()
+public class GetBase<T> where T : class, new()
 {
-    private static T? Instance;
+    protected static T? Instance;
     public static T Get() => Instance ??= new T();
+
+    public GetBase()
+    {
+        Instance = this as T;
+    }
+    
 }

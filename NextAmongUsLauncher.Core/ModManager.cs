@@ -4,7 +4,6 @@ public class ModManager : GetBase<ModManager>
 {
     public ModManager()
     {
-        
     }
     
     public List<Mod> AllMod { get; private set; } = new();
