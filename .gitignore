@@ -3,4 +3,5 @@
 /.vscode
 NextAmongUsLauncher/bin
 NextAmongUsLauncher/obj
-NextAmongUsLauncher/Properties
+NextAmongUsLauncher.Core/bin
+NextAmongUsLauncher.Core/obj
