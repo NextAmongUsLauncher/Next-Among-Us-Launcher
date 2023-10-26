@@ -1,15 +1,19 @@
 using System;
+using System.Collections.Generic;
 using Windows.Graphics;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using NextAmongUsLauncher.Core;
 using NextAmongUsLauncher.Pages;
 
 namespace NextAmongUsLauncher;
 
 public sealed partial class MainWindow : Window
 {
-    public IntPtr hWnd;
+    public new static MainWindow Current { get; private set; }
+    public static (Type, object) CurrentPage { get; private set; }
+    public ModManager ModManager;
 
     public MainWindow()
     {
@@ -22,21 +26,24 @@ public sealed partial class MainWindow : Window
 
         ExtendsContentIntoTitleBar = true;
         SetTitleBar(AppTitleBar);
+        
+        ModManager = new ModManager();
     }
 
-    public new static MainWindow Current { get; private set; }
-
-    private void GloabalNavigation_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+    private void Main_Navigation_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
-        var pageType = ((NavigationViewItem)args.SelectedItem).Tag switch
+        var SelectedItem = (NavigationViewItem)args.SelectedItem;
+        
+        var pageType = SelectedItem.Tag switch
         {
             "Play" => typeof(Page_Play),
             "Version" => typeof(Page_Version),
             "About" => typeof(Page_About),
             "Setting" => typeof(Page_Setting),
-            _ => typeof(Page_Play)
+            _ => null
         };
-
-        _ = contentFrame.Navigate(pageType);
+        
+        CurrentPage = (pageType, SelectedItem.Tag);
+        contentFrame.Navigate(pageType);
     }
 }

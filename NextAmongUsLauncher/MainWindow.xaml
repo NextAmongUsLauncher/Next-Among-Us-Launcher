@@ -30,9 +30,9 @@
             SelectionFollowsFocus="Enabled"
             IsTabStop="False"
             IsSettingsVisible="False"
-            SelectionChanged="GloabalNavigation_SelectionChanged">
+            SelectionChanged="Main_Navigation_SelectionChanged">
             <NavigationView.MenuItems>
-                <NavigationViewItem x:Name="DefaultPage" Content="启动器" Tag="Play" Icon="Play" />
+                <NavigationViewItem x:Name="DefaultPage" Content="启动器" Tag="Play" Icon="Play"/>
                 <NavigationViewItem Content="版本管理" Tag="Version" Icon="Library" />
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>

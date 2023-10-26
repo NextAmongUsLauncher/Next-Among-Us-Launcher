@@ -1,4 +1,5 @@
 using Microsoft.UI.Xaml.Controls;
+using NextAmongUsLauncher.Core;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -13,5 +14,9 @@ public sealed partial class Page_Play : Page
     public Page_Play()
     {
         InitializeComponent();
+
+        var mod = ModManager.Get().GetCurrentMod();
+        TitleText.Text = mod.Name;
+        VersionText.Text = mod.Version;
     }
 }
