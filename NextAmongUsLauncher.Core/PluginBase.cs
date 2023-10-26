@@ -1,24 +1,16 @@
-using System.Reflection;
-
 namespace NextAmongUsLauncher.Core;
 
-public sealed class Mod
+public abstract class PluginBase
 {
-    public string PUID;
     public string Name;
     public string Version;
     public string Author;
+    public string PUID;
     public string Description;
-    public Assembly ModInstance;
-    public object ModBaseClass;
+    public string Icon;
     public string URL;
     public string License;
     
-    
-    public Mod()
-    {
-        
-    }
-    
-    
+    public abstract void Load();
+    public abstract void Unload();
 }

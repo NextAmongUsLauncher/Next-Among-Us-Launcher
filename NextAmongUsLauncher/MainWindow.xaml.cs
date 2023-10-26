@@ -15,7 +15,6 @@ public sealed partial class MainWindow : Window
     public new static MainWindow Current { get; private set; }
     public static NavigationViewItem CurrentPage { get; private set; }
     public ModManager ModManager;
-    public GameFinder GameFinder;
 
     private readonly Dictionary<Type, NavigationViewItem> AllPageAndTag;
 
@@ -47,8 +46,7 @@ public sealed partial class MainWindow : Window
 
     internal void InitializeCore()
     {
-        ModManager = new ModManager();
-        GameFinder = new GameFinder();
+        ModManager = ModManager.Get();
     }
 
     private void Main_Navigation_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)

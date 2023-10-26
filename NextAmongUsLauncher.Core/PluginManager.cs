@@ -1,5 +1,6 @@
 namespace NextAmongUsLauncher.Core;
 
-public static class GameFinder
+public class PluginManager
 {
+    
 }
