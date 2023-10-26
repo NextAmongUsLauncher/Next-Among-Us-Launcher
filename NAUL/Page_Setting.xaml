@@ -10,6 +10,33 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <StackPanel Orientation="Vertical" Margin="50, 50, 50, 50">
 
+            <TextBlock Text="应用设置" FontSize="50" FontWeight="ExtraBold" Margin="0, -10, 0, 0"></TextBlock>
+
+            <TextBlock Text="语言" FontSize="18" FontWeight="SemiBold" Margin="0, 50, 0, 10"></TextBlock>
+            <ComboBox SelectionChanged="LangsComboBox_SelectionChanged" PlaceholderText="选择用于显示的语言" Width="200">
+                <x:String>简体中文 (zh-CN)</x:String>
+                <x:String>繁體中文 (zh-TW)</x:String>
+                <x:String>English (en-US)</x:String>
+            </ComboBox>
+
+            <TextBlock Text="Steam AmongUs 路径" FontSize="18" FontWeight="SemiBold" Margin="0, 50, 0, 10"></TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <TextBox Width="520" PlaceholderText="请输入路径"></TextBox>
+                <Button x:Name="PickSteamFolderButton" Content="浏览"
+                    Click="PickSteamFolderButton_Click" Margin="10, 28, 0, 0" />
+            </StackPanel>
+            <ToggleSwitch OffContent="禁用" OnContent="启用" IsOn="False" />
+
+            <TextBlock Text="Epic AmongUs 路径" FontSize="18" FontWeight="SemiBold" Margin="0, 50, 0, 10"></TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <TextBox Width="520" PlaceholderText="请输入路径"></TextBox>
+                <Button x:Name="PickEpicFolderButton" Content="浏览"
+                    Click="PickEpicFolderButton_Click" Margin="10, 28, 0, 0" />
+            </StackPanel>
+            <ToggleSwitch OffContent="禁用" OnContent="启用" IsOn="False" />
+
+        </StackPanel>
     </Grid>
 </Page>

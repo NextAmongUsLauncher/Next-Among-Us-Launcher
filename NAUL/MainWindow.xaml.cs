@@ -20,12 +20,13 @@ using Windows.Graphics;
 using Windows.Storage;
 using System.Runtime.InteropServices;
 using Windows.System;
+using System.Security.AccessControl;
 
 namespace NAUL;
 
 public sealed partial class MainWindow : Window
 {
-    private IntPtr hwnd;
+    public IntPtr hWnd;
     private AppWindow appWindow;
 
     public MainWindow()
@@ -34,8 +35,8 @@ public sealed partial class MainWindow : Window
 
         SystemBackdrop = new DesktopAcrylicBackdrop();
 
-        hwnd = WindowNative.GetWindowHandle(this);
-        WindowId id = Win32Interop.GetWindowIdFromWindow(hwnd);
+        hWnd = WindowNative.GetWindowHandle(this);
+        WindowId id = Win32Interop.GetWindowIdFromWindow(hWnd);
         appWindow = AppWindow.GetFromWindowId(id);
 
         appWindow.MoveAndResize(new RectInt32(_X: 335, _Y: 165, _Width: 1250, _Height: 750));
@@ -47,11 +48,12 @@ public sealed partial class MainWindow : Window
 
     private void GloabalNavigation_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
-        Type pageType = args.IsSettingsSelected ? typeof(Page_Setting) : ((NavigationViewItem)args.SelectedItem).Tag switch
+        Type pageType = ((NavigationViewItem)args.SelectedItem).Tag switch
         {
             "Play" => typeof(Page_Play),
             "Version" => typeof(Page_Version),
             "About" => typeof(Page_About),
+            "Setting" => typeof(Page_Setting),
             _ => typeof(Page_Play),
         };
 

@@ -12,6 +12,9 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage.AccessCache;
+using Windows.Storage.Pickers;
+using Windows.Storage;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,4 +29,20 @@ public sealed partial class Page_Setting : Page
     {
         this.InitializeComponent();
     }
+
+    private void LangsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
+    }
+
+    private void PickSteamFolderButton_Click(object sender, RoutedEventArgs e)
+    {
+        
+    }
+
+    private void PickEpicFolderButton_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
 }
