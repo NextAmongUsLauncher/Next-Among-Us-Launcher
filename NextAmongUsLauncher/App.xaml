@@ -14,6 +14,8 @@
             <ResourceDictionary x:Key="ControlFillColorTransparentBrush" />
             <StaticResource x:Key="WindowCaptionBackground" ResourceKey="ControlFillColorTransparentBrush" />
             <StaticResource x:Key="WindowCaptionBackgroundDisabled" ResourceKey="ControlFillColorTransparentBrush" />
+            <Style x:Key="ButtonStyle" TargetType="Button">
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

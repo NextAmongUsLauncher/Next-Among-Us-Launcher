@@ -6,8 +6,50 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pages="using:NextAmongUsLauncher.Pages"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid />
+        <Grid ColumnDefinitions="400, *">
+        <StackPanel Orientation="Vertical" Grid.Column="0">
+            <TextBlock Margin="50, 40, 0, 0" Text="版本列表" FontSize="50" FontWeight="ExtraBold"></TextBlock>
+            <ListView x:Name="VersionsList"
+                      Margin="30, 30, 0, 0"
+                      SelectionMode="Single"
+                      VerticalAlignment="Stretch"
+                      IsItemClickEnabled="True"
+                      ItemClick="VersionsList_ItemClick"
+                      AllowDrop="True"
+                      CanReorderItems="True"
+                      ItemsSource="{x:Bind versions}">
+                <ListView.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Icon="Play" Text="启动" Tag="Run"/>
+                        <MenuFlyoutItem Icon="Folder"  Text="浏览目录" Click="OepnLocation_Click" Tag="OepnLocation"/>
+                        <MenuFlyoutItem Icon="Edit" Text="重命名" Tag="Rename"/>
+                        <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                        <MenuFlyoutItem Icon="Delete" Text="删除" Tag="Delete"/>
+                    </MenuFlyout>
+                </ListView.ContextFlyout>
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="pages:VersionItem">
+                        <StackPanel Orientation="Horizontal" Padding="5, 10, 5, 10">
+                            <FontIcon Glyph="{x:Bind FontGlyph}" FontSize="35" Margin="0, 0, 20, 0"/>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{x:Bind Name}" FontSize="22" FontWeight="Bold"></TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{x:Bind ModVersion}" FontSize="19"></TextBlock>
+                                    <TextBlock Text="{x:Bind Platform}" FontSize="19" Margin="4, 0, 4, 0"></TextBlock>
+                                    <TextBlock Text="{x:Bind GameVersion}" FontSize="19"></TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+        <StackPanel x:Name="VersionSettingsPanel" Orientation="Vertical" Grid.Column="1" Visibility="Visible">
+
+        </StackPanel>
+        </Grid>
 </Page>
