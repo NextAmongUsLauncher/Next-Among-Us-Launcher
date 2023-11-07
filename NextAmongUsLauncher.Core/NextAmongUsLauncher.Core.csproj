@@ -5,5 +5,15 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="Vanara.Core" Version="3.4.17" />
+      <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.4.17" />
+      <PackageReference Include="Vanara.PInvoke.User32" Version="3.4.17" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Utils\" />
+    </ItemGroup>
 
 </Project>

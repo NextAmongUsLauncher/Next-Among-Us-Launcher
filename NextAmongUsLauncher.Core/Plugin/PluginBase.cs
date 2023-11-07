@@ -12,5 +12,5 @@ public abstract class PluginBase
     public string License;
     
     public abstract void Load();
-    public abstract void Unload();
+    public virtual void Unload() {}
 }

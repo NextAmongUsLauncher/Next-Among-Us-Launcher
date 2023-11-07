@@ -38,6 +38,11 @@
         </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Base\" />
+      <Folder Include="Windows\" />
+    </ItemGroup>
+
     <!--  &lt;!&ndash; 
         Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
         Tools extension to be activated for this project even if the Windows App SDK Nuget
