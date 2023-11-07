@@ -5,7 +5,14 @@ namespace NextAmongUsLauncher;
 
 public sealed class Launcher
 {
+    /// <summary>
+    /// 实例
+    /// </summary>
     public static Launcher Instance { get; private set; }
+    
+    /// <summary>
+    /// 是否为开发模式
+    /// </summary>
     public static bool IsDev { get; private set; } = false;
     
     public readonly Window MainWindow;
@@ -29,4 +36,6 @@ public sealed class Launcher
     {
         
     }
+
+    internal void SetDev(bool dev) => IsDev = dev;
 }

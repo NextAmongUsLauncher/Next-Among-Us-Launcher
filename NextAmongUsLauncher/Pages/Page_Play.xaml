@@ -16,36 +16,7 @@
             <TextBlock Name="TitleText" FontSize="100" FontWeight="ExtraBold" />
             <TextBlock Name="VersionText" FontSize="30" Margin="10, -15, 0, 0" />
         </StackPanel>
-
         
-        <ComboBox Grid.Column="0"
-                  Grid.ColumnSpan="2"
-                  Name="GamePath_ComboBox"
-                  VerticalAlignment="Bottom" 
-                  HorizontalAlignment="Left"
-                  Height="50"
-                  Width="300"  
-                  Margin="150, 0, 0, 50"
-                  SelectedIndex="0"
-        >
-            <x:String>test 1</x:String>
-            <x:String>test 2</x:String>
-            <x:String>test 3</x:String>
-        </ComboBox>
-        
-        <ComboBox Grid.Column="0"
-                  Name="GamePlatform_ComBox"
-                  VerticalAlignment="Bottom" 
-                  HorizontalAlignment="Left"
-                  Height="50"
-                  Width="120"
-                  Margin="0, 0, 0, 50"
-                  SelectedIndex="0"
-                  
-                  >
-            <x:String>Steam</x:String>
-            <x:String>Epic</x:String>
-        </ComboBox>
         
         <Button Grid.Column="1" 
                 HorizontalAlignment="Right" 

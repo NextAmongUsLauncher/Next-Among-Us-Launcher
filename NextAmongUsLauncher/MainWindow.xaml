@@ -36,6 +36,7 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem Name="PlayerPage" Content="启动器" Tag="Play" Icon="Play"/>
                 <NavigationViewItem Name="VersionPage" Content="版本管理" Tag="Version" Icon="Library" />
+                <NavigationViewItem Name="ServerPage" Content="服务器管理" Tag="Server" Icon="Library"/>
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem Name="AboutPage" Content="关于" Tag="About" Icon="ContactInfo" />

@@ -13,7 +13,7 @@
         <WindowsPackageType>None</WindowsPackageType>
         <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <ApplicationIcon>../NextAmongUsLauncher.Resource/LOGO.ico</ApplicationIcon>
+        <ApplicationIcon>../NextAmongUsLauncher.Resource/favicon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
@@ -39,8 +39,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Base\" />
-      <Folder Include="Windows\" />
+      <Folder Include="Helper\" />
     </ItemGroup>
 
     <!--  &lt;!&ndash; 

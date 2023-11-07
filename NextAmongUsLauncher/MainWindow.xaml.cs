@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Windows.Graphics;
@@ -16,8 +18,7 @@ public sealed partial class MainWindow : Window
     public new static MainWindow Current { get; private set; }
     public static NavigationViewItem CurrentPage { get; private set; }
 
-    private readonly HashSet<NavigationViewItem> _Pages = new();
-    private readonly HashSet<Type> _PageTypes;
+    private readonly Dictionary<NavigationViewItem, Type> _pages;
     
 
     public MainWindow()
@@ -31,18 +32,23 @@ public sealed partial class MainWindow : Window
 
         ExtendsContentIntoTitleBar = true;
         SetTitleBar(AppTitleBar);
-        Main_NavigationView.MenuItems.ToList().ForEach(n => _Pages.Add(n as NavigationViewItem));
-        Main_NavigationView.FooterMenuItems.ToList().ForEach(n => _Pages.Add(n as NavigationViewItem));
-        _PageTypes =
-            new HashSet<Type>(Assembly.GetExecutingAssembly().GetTypes().Where(n => n.BaseType == typeof(Page)));
+
+        _pages = new Dictionary<NavigationViewItem, Type>
+        {
+            { PlayerPage, typeof(Page_Play) },
+            { AboutPage, typeof(Page_About) },
+            { SettingPage, typeof(Page_Setting) },
+            { VersionPage, typeof(Page_Version) },
+            { ServerPage, typeof(Page_Server)}
+        };
 
         if (CurrentPage == null)
         {
             Navigate(PlayerPage);
         }
+        
     }
     
-
 
     private void Main_Navigation_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
@@ -52,13 +58,14 @@ public sealed partial class MainWindow : Window
     }
 
     private void Navigate(Type type)=>
-        Navigate(_Pages.FirstOrDefault(n => ReferenceEquals(n.Tag, n.Name.Split("_")[1])), type);
+        Navigate(_pages.FirstOrDefault(n => n.Value == type).Key, type);
 
     private void Navigate(NavigationViewItem item) =>
-        Navigate(item, _PageTypes.FirstOrDefault(n => ReferenceEquals(n.Name.Split("_")[1], item.Tag)));
+        Navigate(item, _pages[item]);
 
     private void Navigate(NavigationViewItem item, Type type)
     {
+        if (item == null || type == null) return;
         Main_NavigationView.SelectedItem = item;
         
         CurrentPage = item;

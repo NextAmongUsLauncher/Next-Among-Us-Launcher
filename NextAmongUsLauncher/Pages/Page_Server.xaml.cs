@@ -1,11 +1,10 @@
 using Microsoft.UI.Xaml.Controls;
 
-
 namespace NextAmongUsLauncher.Pages;
 
-public sealed partial class Page_About : Page
+public sealed partial class Page_Server : Page
 {
-    public Page_About()
+    public Page_Server()
     {
         InitializeComponent();
     }
