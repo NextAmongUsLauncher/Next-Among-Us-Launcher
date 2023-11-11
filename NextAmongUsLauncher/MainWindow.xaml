@@ -18,7 +18,7 @@
                 Height="48"
                 VerticalAlignment="Top">
             <Grid ColumnDefinitions="52, Auto, *">
-                <Image Grid.Column="0" Source="LOGO.ico" Height="22" />
+                <Image Grid.Column="0" Source="favicon.ico" Height="22" />
                 <TextBlock x:Name="WindowTitle" Grid.Column="1" VerticalAlignment="Center" Text="Next Among Us Launch" />
             </Grid>
         </Border>

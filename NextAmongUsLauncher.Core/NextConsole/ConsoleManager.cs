@@ -1,3 +1,4 @@
+using System.Text;
 using Vanara.PInvoke;
 
 namespace NextAmongUsLauncher.Core.NextConsole;
@@ -9,13 +10,13 @@ public class ConsoleManager
     
     internal bool ConsoleIsPresence => HWND != IntPtr.Zero;
     internal bool ConsoleIsOpen { get; private set; }
-    internal TextWriter? ConsoleOut { get; private set; }
+    public TextWriter? ConsoleOut { get; private set; }
 
     private string Title;
 
-    public void Init(string title = "Next Among Us Launcher")
+    public ConsoleManager(string title)
     {
-        
+        Title = title;
     }
     
     public void CreateConsole()
@@ -23,8 +24,9 @@ public class ConsoleManager
         Kernel32.AllocConsole();
         HWND = Kernel32.GetConsoleWindow();
         User32.GetWindowInfo(HWND, ref _windowinfo);
-        System.Console.Title = Title;
-        ConsoleOut = System.Console.Out;
+        Console.Title = Title;
+        Console.OutputEncoding = Encoding.UTF8;
+        ConsoleOut = Console.Out;
         ConsoleIsOpen = true;
     }
 

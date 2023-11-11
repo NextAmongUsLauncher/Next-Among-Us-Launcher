@@ -9,6 +9,16 @@ public class ModManager : GetBase<ModManager>
     public List<Mod> AllMod { get; private set; } = new();
     private Mod? CurrentMod;
 
+    public void LoadMods(DirectoryInfo directory)
+    {
+        
+    }
+
+    public void ClearMods()
+    {
+        
+    }
+
     public Mod GetCurrentMod()
     {
         if (CurrentMod != default ) return CurrentMod;
@@ -16,7 +26,8 @@ public class ModManager : GetBase<ModManager>
         {
             Name = "None",
             Version = "0.0.0",
-            PUID = "mod"
+            PUID = "mod",
+            IsDefault = true
         };
         return CurrentMod = mod;
     }

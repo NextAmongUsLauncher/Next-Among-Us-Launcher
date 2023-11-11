@@ -13,6 +13,7 @@ public sealed class Mod
     public object ModBaseClass;
     public string URL;
     public string License;
+    public bool IsDefault;
     
     
     public Mod()

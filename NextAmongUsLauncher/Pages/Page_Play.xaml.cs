@@ -1,3 +1,4 @@
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using NextAmongUsLauncher.Core;
 
@@ -13,5 +14,6 @@ public sealed partial class Page_Play : Page
         var mod = ModManager.Get().GetCurrentMod();
         TitleText.Text = mod.Name;
         VersionText.Text = mod.Version;
+        TitleText.Visibility = VersionText.Visibility = mod.IsDefault ? Visibility.Collapsed : Visibility.Visible;
     }
 }
