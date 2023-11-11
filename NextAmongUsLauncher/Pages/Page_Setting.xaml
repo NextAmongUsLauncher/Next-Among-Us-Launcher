@@ -20,23 +20,6 @@
                 <x:String>繁體中文 (zh-TW)</x:String>
                 <x:String>English (en-US)</x:String>
             </ComboBox>
-
-            <TextBlock Text="Steam AmongUs 路径" FontSize="18" FontWeight="SemiBold" Margin="0, 50, 0, 10" />
-            <StackPanel Orientation="Horizontal">
-                <TextBox Width="520" PlaceholderText="请输入路径" />
-                <Button x:Name="PickSteamFolderButton" Content="浏览"
-                        Click="PickSteamFolderButton_Click" Margin="10, 28, 0, 0" />
-            </StackPanel>
-            <ToggleSwitch OffContent="禁用" OnContent="启用" IsOn="False" />
-
-            <TextBlock Text="Epic AmongUs 路径" FontSize="18" FontWeight="SemiBold" Margin="0, 50, 0, 10" />
-            <StackPanel Orientation="Horizontal">
-                <TextBox Width="520" PlaceholderText="请输入路径" />
-                <Button x:Name="PickEpicFolderButton" Content="浏览"
-                        Click="PickEpicFolderButton_Click" Margin="10, 28, 0, 0" />
-            </StackPanel>
-            <ToggleSwitch OffContent="禁用" OnContent="启用" IsOn="False" />
-
         </StackPanel>
     </Grid>
 </Page>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Page
+    x:Class="NextAmongUsLauncher.Pages.Page_Server"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    xmlns:Base="using:NextAmongUsLauncher.Core.Base"
+    >
+
+    <Grid RowDefinitions="Auto, *">
+                    <StackPanel Orientation="Vertical" Grid.Column="0">
+                
+                <TextBlock Margin="50, 40, 0, 0" Text="服务器列表" FontSize="50" FontWeight="ExtraBold"></TextBlock>
+                <ListView x:Name="ServersList"
+                          Margin="30, 30, 0, 0"
+                          SelectionMode="Single"
+                          VerticalAlignment="Stretch"
+                          IsItemClickEnabled="True"
+                          AllowDrop="True"
+                          CanReorderItems="True"
+                          ItemsSource="{x:Bind Servers}"
+                          ItemClick="ServersList_OnItemClick"
+                          >
+                    
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="Base:Server">
+                            <StackPanel Orientation="Horizontal" Padding="5, 10, 5, 10">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{x:Bind Name}" FontSize="22" FontWeight="Bold"></TextBlock>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{x:Bind  ServerInfos[0].Ip}" FontSize="19" Margin="4, 0, 4, 0"></TextBlock>
+                                        <TextBlock Text="{x:Bind ServerInfos[0].Port}" FontSize="19"></TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+    </Grid>
+
+</Page>

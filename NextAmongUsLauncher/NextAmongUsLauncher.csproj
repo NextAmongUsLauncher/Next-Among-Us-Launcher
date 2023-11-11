@@ -13,7 +13,7 @@
         <WindowsPackageType>None</WindowsPackageType>
         <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <ApplicationIcon>../NextAmongUsLauncher.Resource/LOGO.ico</ApplicationIcon>
+        <ApplicationIcon>../NextAmongUsLauncher.Resource/favicon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
@@ -36,6 +36,10 @@
         <Content Include="../NextAmongUsLauncher.Resource/**">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Helper\" />
     </ItemGroup>
 
     <!--  &lt;!&ndash; 

@@ -18,7 +18,7 @@
                 Height="48"
                 VerticalAlignment="Top">
             <Grid ColumnDefinitions="52, Auto, *">
-                <Image Grid.Column="0" Source="LOGO.ico" Height="22" />
+                <Image Grid.Column="0" Source="favicon.ico" Height="22" />
                 <TextBlock x:Name="WindowTitle" Grid.Column="1" VerticalAlignment="Center" Text="Next Among Us Launch" />
             </Grid>
         </Border>
@@ -30,14 +30,17 @@
             SelectionFollowsFocus="Enabled"
             IsTabStop="False"
             IsSettingsVisible="False"
-            SelectionChanged="GloabalNavigation_SelectionChanged">
+            SelectionChanged="Main_Navigation_SelectionChanged"
+            Name="Main_NavigationView"
+            >
             <NavigationView.MenuItems>
-                <NavigationViewItem x:Name="DefaultPage" Content="启动器" Tag="Play" Icon="Play" />
-                <NavigationViewItem Content="版本管理" Tag="Version" Icon="Library" />
+                <NavigationViewItem Name="PlayerPage" Content="启动器" Tag="Play" Icon="Play"/>
+                <NavigationViewItem Name="VersionPage" Content="版本管理" Tag="Version" Icon="Library" />
+                <NavigationViewItem Name="ServerPage" Content="服务器管理" Tag="Server" Icon="Library"/>
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
-                <NavigationViewItem Content="关于" Tag="About" Icon="ContactInfo" />
-                <NavigationViewItem Content="设置" Tag="Setting" Icon="Setting" />
+                <NavigationViewItem Name="AboutPage" Content="关于" Tag="About" Icon="ContactInfo" />
+                <NavigationViewItem Name="SettingPage" Content="设置" Tag="Setting" Icon="Setting" />
             </NavigationView.FooterMenuItems>
             <Frame x:Name="contentFrame" />
         </NavigationView>

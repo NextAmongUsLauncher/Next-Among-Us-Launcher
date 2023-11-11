@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "NextAmongUsLauncher": {
+      "commandName": "Project"
+    },
+    "配置文件 1": {
+      "commandName": "Executable",
+      "executablePath": "E:\\Code\\Next-Among-Us-Launcher\\NextAmongUsLauncher\\bin\\x64\\Debug\\net7-windows10.0.22621.0\\NextAmongUsLauncher.exe"
+    }
+  }
+}
