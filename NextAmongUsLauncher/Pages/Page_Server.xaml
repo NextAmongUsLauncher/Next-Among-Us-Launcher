@@ -10,37 +10,39 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     xmlns:Base="using:NextAmongUsLauncher.Core.Base"
     >
-
-    <Grid RowDefinitions="Auto, *">
-                    <StackPanel Orientation="Vertical" Grid.Column="0">
-                
-                <TextBlock Margin="50, 40, 0, 0" Text="服务器列表" FontSize="50" FontWeight="ExtraBold"></TextBlock>
-                <ListView x:Name="ServersList"
-                          Margin="30, 30, 0, 0"
-                          SelectionMode="Single"
-                          VerticalAlignment="Stretch"
-                          IsItemClickEnabled="True"
-                          AllowDrop="True"
-                          CanReorderItems="True"
-                          ItemsSource="{x:Bind Servers}"
-                          ItemClick="ServersList_OnItemClick"
-                          >
-                    
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="Base:Server">
-                            <StackPanel Orientation="Horizontal" Padding="5, 10, 5, 10">
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="{x:Bind Name}" FontSize="22" FontWeight="Bold"></TextBlock>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{x:Bind  ServerInfos[0].Ip}" FontSize="19" Margin="4, 0, 4, 0"></TextBlock>
-                                        <TextBlock Text="{x:Bind ServerInfos[0].Port}" FontSize="19"></TextBlock>
+    
+    <Grid RowDefinitions="Auto, *" ColumnDefinitions="Auto, *">
+        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.RowSpan="1">
+            <TextBlock Margin="50, 40, 0, 0" Text="服务器列表" FontSize="50" FontWeight="ExtraBold"></TextBlock>
+                    <ListView 
+                        x:Name="ServersList"
+                        Margin="30, 30, 0, 0"
+                        SelectionMode="Single"
+                        VerticalAlignment="Stretch"
+                        IsItemClickEnabled="True"
+                        CanReorderItems="True"
+                        ItemsSource="{x:Bind Servers}"
+                        ItemClick="ServersList_OnItemClick"
+                        Height="550"
+                        >
+                        
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="Base:Server">
+                                <StackPanel Orientation="Horizontal" Padding="5, 10, 5, 10">
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="{x:Bind Name}" FontSize="22" FontWeight="Bold"></TextBlock>
+                                    
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{x:Bind  ServerInfos[0].Ip}" FontSize="19" Margin="4, 0, 4, 0"></TextBlock>
+                                            <TextBlock Text="{x:Bind ServerInfos[0].Port}" FontSize="19"></TextBlock>
+                                        </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+        </StackPanel>
+        
+        <StackPanel Grid.Column="1" Orientation="Vertical"></StackPanel>
     </Grid>
-
 </Page>

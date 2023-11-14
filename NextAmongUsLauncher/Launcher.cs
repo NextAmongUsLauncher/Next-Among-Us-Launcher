@@ -4,6 +4,7 @@ using System.IO;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using NextAmongUsLauncher.Core.NextConsole;
+using NextAmongUsLauncher.Core.NextConsole.Logs;
 using NextAmongUsLauncher.Core.Utils;
 
 namespace NextAmongUsLauncher;
@@ -39,7 +40,7 @@ public sealed class Launcher
     ///  所有页面
     /// </summary>
     public HashSet<Page> AllPage { get; private set; } = new();
-    
+
     public Launcher(Window Window)
     {
         Instance = this;
@@ -47,6 +48,9 @@ public sealed class Launcher
         MainWindow.Activate();
         AllWindow.Add(MainWindow);
         Start();
+        
+        var diskLogListener = new DiskLogListener();
+        Logger.Instance.RegisterListener(diskLogListener);
     }
 
     internal void Start()
