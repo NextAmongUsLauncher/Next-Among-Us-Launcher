@@ -12,7 +12,7 @@
     >
     
     <Grid RowDefinitions="Auto, *" ColumnDefinitions="Auto, *">
-        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.RowSpan="1">
+        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.RowSpan="1" Grid.ColumnSpan="1">
             <TextBlock Margin="50, 40, 0, 0" Text="服务器列表" FontSize="50" FontWeight="ExtraBold"></TextBlock>
                     <ListView 
                         x:Name="ServersList"
@@ -43,6 +43,22 @@
                     </ListView>
         </StackPanel>
         
-        <StackPanel Grid.Column="1" Orientation="Vertical"></StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Vertical">
+            <Button>
+                <TextBlock Text="编辑"></TextBlock>
+            </Button>
+            
+            <Button>
+                <TextBlock Text="添加"></TextBlock>
+            </Button>
+            
+            <Button>
+                <TextBlock Text="删除"></TextBlock>
+            </Button>
+            
+            <Button>
+                <TextBlock Text="导入"></TextBlock>
+            </Button>
+        </StackPanel>
     </Grid>
 </Page>

@@ -6,15 +6,26 @@ namespace NextAmongUsLauncher.Core.NextConsole;
 
 public class Logger
 {
-    public static Logger Instance { get; } = new();
+    public static Logger Instance { get; private set; }
     
     public ObservableCollection<ILogListener> Listeners { get; private set; }
     
     public SourceCollection Sources { get; private set; }
 
-    static Logger()
+    public static void Initialize(bool ActiveConsole,ConsoleManager? consoleManager = null)
     {
+        Instance = new Logger();
         
+        var diskLogListener = new DiskLogListener();
+        Instance.RegisterListener(diskLogListener);
+
+        if (!ActiveConsole) return;
+
+        consoleManager ??= new ConsoleManager("Next Among Us Launcher");
+        consoleManager.CreateConsole();
+        
+        var ConsoleLogListener = new ConsoleLogListener(consoleManager);
+        Instance.RegisterListener(ConsoleLogListener);
     }
 
     public Logger()

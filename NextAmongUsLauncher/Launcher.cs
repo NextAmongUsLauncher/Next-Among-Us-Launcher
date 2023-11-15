@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using NextAmongUsLauncher.Core;
 using NextAmongUsLauncher.Core.NextConsole;
 using NextAmongUsLauncher.Core.NextConsole.Logs;
 using NextAmongUsLauncher.Core.Utils;
@@ -48,9 +52,6 @@ public sealed class Launcher
         MainWindow.Activate();
         AllWindow.Add(MainWindow);
         Start();
-        
-        var diskLogListener = new DiskLogListener();
-        Logger.Instance.RegisterListener(diskLogListener);
     }
 
     internal void Start()
@@ -60,11 +61,7 @@ public sealed class Launcher
 #endif
         
         ConsoleManager = new ConsoleManager("Next Among Us Launcher");
-        
-        if (IsDev)
-        {
-            ConsoleManager.CreateConsole();
-        }
+        Logger.Initialize(IsDev, ConsoleManager);
     }
 
     public void Close()
