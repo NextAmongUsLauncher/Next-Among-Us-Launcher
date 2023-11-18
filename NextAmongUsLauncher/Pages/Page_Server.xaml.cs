@@ -1,9 +1,11 @@
+#nullable enable
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using NextAmongUsLauncher.Core.Base;
 using NextAmongUsLauncher.Core.Utils;
@@ -19,6 +21,8 @@ public sealed partial class Page_Server : Page
 
     public static readonly string RegionConfigPath =
         $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}Low/Innersloth/Among Us/regionInfo.json";
+
+    public Server? CurrentServer;
     
     public Page_Server()
     {
@@ -39,6 +43,14 @@ public sealed partial class Page_Server : Page
 
     private void ServersList_OnItemClick(object sender, ItemClickEventArgs e)
     {
-        ServerEditWindow.OpenWindow(e, ServerSerialization);
+        CurrentServer = e.ClickedItem as Server;
+    }
+
+    private void EditButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (CurrentServer == null)
+            return;
+
+        ServerEditWindow.OpenWindow(CurrentServer, ServerSerialization);
     }
 }

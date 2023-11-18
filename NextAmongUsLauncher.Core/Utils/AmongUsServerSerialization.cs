@@ -69,7 +69,7 @@ public class AmongUsServerSerialization
                      region.GetProperty("$type").GetString()!,
                      region.GetProperty("Name").GetString()!,
                      region.GetProperty("PingServer").GetString()!,
-                     region.GetProperty("TargetServer").GetString(),
+                     Get(region, "TargetServer"),
                      region.GetProperty("TranslateName").GetInt32(), 
                      infos
                  ))
@@ -78,5 +78,10 @@ public class AmongUsServerSerialization
         }
         
         return this;
+
+        string? Get(JsonElement element, string name)
+        {
+            return element.TryGetProperty(name, out element) ? element.GetString() : null;
+        }
     }
 }

@@ -16,6 +16,8 @@ public partial class ServerEditWindow : Window
 
     private ItemClickEventArgs _Item;
     
+    public static ServerEditWindow Current { get; private set; }
+    
     public ServerEditWindow()
     {
         InitializeComponent();
@@ -24,6 +26,7 @@ public partial class ServerEditWindow : Window
         AppWindow.Resize(new SizeInt32(400, 400));
         AppWindow.Destroying += OnDestroy;
         Launcher.Instance.AllWindow.Add(this);
+        Current = this;
     }
 
     public void Set(AmongUsServerSerialization serialization)
@@ -38,13 +41,32 @@ public partial class ServerEditWindow : Window
         ServerName.Text = CurrentServer!.Name;
     }
 
-    private void OnDestroy(AppWindow appWindow, object sender)
+    public void Set(Server server)
     {
-        
+        CurrentServer = server;
+        ServerName.Text = CurrentServer.Name;
     }
 
-    public static ServerEditWindow OpenWindow(ItemClickEventArgs e, AmongUsServerSerialization serialization)
+    private void OnDestroy(AppWindow appWindow, object sender)
     {
+        Launcher.Instance.AllWindow.Remove(this);
+        Current = null;
+    }
+
+    public static ServerEditWindow OpenWindow(Server server = null, AmongUsServerSerialization serialization = null)
+    {
+        if (Current != null)
+        {
+            Current.Set(server);
+            Current.Set(serialization);
+            
+            if (Current.AppWindow.IsVisible) return Current;
+            Current.AppWindow.Show();
+            Current.AppWindow.MoveInZOrderAtTop();
+
+            return Current;
+        }
+        
         ServerEditWindow EditWindow;
         if (Launcher.Instance.AllWindow.Any(n => n is ServerEditWindow))
         {
@@ -60,9 +82,8 @@ public partial class ServerEditWindow : Window
             EditWindow.Activate();
         }
         
-        EditWindow.Set(e);
+        EditWindow.Set(server);
         EditWindow.Set(serialization);
-        
         EditWindow.AppWindow.MoveInZOrderAtTop();
 
         return EditWindow;

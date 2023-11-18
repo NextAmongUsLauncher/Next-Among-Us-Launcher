@@ -44,7 +44,7 @@
         </StackPanel>
         
         <StackPanel Grid.Column="1" Orientation="Vertical">
-            <Button>
+            <Button Click="EditButton_OnClick">
                 <TextBlock Text="编辑"></TextBlock>
             </Button>
             

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net7-windows10.0.22621.0</TargetFramework>
+        <TargetFramework>net8-windows10.0.22621</TargetFramework>
         <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
         <RootNamespace>NextAmongUsLauncher</RootNamespace>
         <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -23,7 +23,7 @@
         <PackageReference Include="CommunityToolkit.WinUI.UI" Version="7.1.2"/>
         <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2"/>
         <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Core" Version="7.1.2"/>
-        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231008000"/>
+        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231115000"/>
         <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.25936-preview"/>
     </ItemGroup>
 
