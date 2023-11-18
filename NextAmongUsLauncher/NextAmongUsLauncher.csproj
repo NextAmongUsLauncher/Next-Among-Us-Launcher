@@ -14,8 +14,8 @@
         <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <ApplicationIcon>../NextAmongUsLauncher.Resource/favicon.ico</ApplicationIcon>
-        <UseRidGraph>true</UseRidGraph>>
-        <TrimmerRootAssembly>true</TrimmerRootAssembly>>
+        <UseRidGraph>true</UseRidGraph>
+        <TrimmerRootAssembly>true</TrimmerRootAssembly>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     </PropertyGroup>
 
