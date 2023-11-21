@@ -1,21 +1,10 @@
 namespace NextAmongUsLauncher.Core.NextConsole.Logs;
 
-public abstract class LogEventArgs : EventArgs
+public abstract class LogEventArgs(LogLevel logLevel, ILogSource source, object data) : EventArgs
 {
-    public LogLevel LogLevel { get; }
-    
-    public ILogSource  Source { get; }
-    
-    public object Data { get; }
-    
-    public LogEventArgs(LogLevel logLevel, ILogSource source, object data)
-    {
-        LogLevel = logLevel;
-        
-        Source = source;
-        
-        Data = data;
-    }
-    
-    
+    public LogLevel LogLevel { get; } = logLevel;
+
+    public ILogSource  Source { get; } = source;
+
+    public object Data { get; } = data;
 }

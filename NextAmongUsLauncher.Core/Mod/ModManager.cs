@@ -1,3 +1,5 @@
+using NextAmongUsLauncher.Core.Base;
+
 namespace NextAmongUsLauncher.Core;
 
 public class ModManager : GetBase<ModManager>

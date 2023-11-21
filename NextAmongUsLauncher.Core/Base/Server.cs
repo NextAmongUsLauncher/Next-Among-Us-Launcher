@@ -3,35 +3,33 @@ using System.Text.Json.Serialization;
 namespace NextAmongUsLauncher.Core.Base;
 
 public sealed class Server
+    (
+        string type, 
+        string name, 
+        string pingServer, 
+        string? targetServer, 
+        int translateName, 
+        List<Server.ServerInfo> serverInfos
+        )
 {
-    public Server(string type, string name, string pingServer, string? targetServer, int translateName, List<ServerInfo> serverInfos)
-    {
-        Type = type;
-        Name = name;
-        PingServer = pingServer;
-        TargetServer = targetServer;
-        TranslateName = translateName;
-        ServerInfos = serverInfos;
-    }
-    
     [JsonPropertyName("$type"), JsonPropertyOrder(0)]
-    public string Type { get; set; }
-    
+    public string Type { get; set; } = type;
+
     [JsonPropertyOrder(1)]
-    public string Name { get; set; }
-    
+    public string Name { get; set; } = name;
+
     [JsonPropertyOrder(2)]
-    public string PingServer { get; set; }
-    
+    public string PingServer { get; set; } = pingServer;
+
     [JsonPropertyName("Servers"), JsonPropertyOrder(3)]
-    public List<ServerInfo> ServerInfos { get; set; }
-    
+    public List<ServerInfo> ServerInfos { get; set; } = serverInfos;
+
     [JsonPropertyOrder(4)]
-    public string? TargetServer { get; set; }
-    
+    public string? TargetServer { get; set; } = targetServer;
+
     [JsonPropertyOrder(4)]
-    public int TranslateName { get; set; }
-    
+    public int TranslateName { get; set; } = translateName;
+
 
     public sealed record ServerInfo(
         [property: JsonPropertyOrder(0)]string Name, 

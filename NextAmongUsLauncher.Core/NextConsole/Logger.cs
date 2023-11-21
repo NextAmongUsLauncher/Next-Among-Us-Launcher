@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.ObjectModel;
 using NextAmongUsLauncher.Core.NextConsole.Logs;
 
@@ -6,7 +5,7 @@ namespace NextAmongUsLauncher.Core.NextConsole;
 
 public class Logger
 {
-    public static Logger Instance { get; private set; }
+    public static Logger? Instance { get; private set; }
     
     public ObservableCollection<ILogListener> Listeners { get; private set; }
     
@@ -54,9 +53,9 @@ public class Logger
     }
 }
 
-public class SourceCollection : List<ILogSource>, ICollection<ILogSource>
+public class SourceCollection(ObservableCollection<ILogListener> logListeners) : List<ILogSource>, ICollection<ILogSource>
 {
-    public ObservableCollection<ILogListener> Listeners;
+    public ObservableCollection<ILogListener> Listeners = logListeners;
 
     bool ICollection<ILogSource>.IsReadOnly => false;
     
@@ -67,11 +66,6 @@ public class SourceCollection : List<ILogSource>, ICollection<ILogSource>
         
         
         base.Add(item);
-    }
-
-    public SourceCollection(ObservableCollection<ILogListener> logListeners)
-    {
-        Listeners = logListeners;
     }
 
     public void SetListener(ObservableCollection<ILogListener> listeners)

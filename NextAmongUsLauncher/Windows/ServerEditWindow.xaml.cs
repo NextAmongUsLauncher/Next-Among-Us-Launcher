@@ -16,7 +16,7 @@ public partial class ServerEditWindow : Window
 
     private ItemClickEventArgs _Item;
     
-    public static ServerEditWindow Current { get; private set; }
+    public new static ServerEditWindow Current { get; private set; }
     
     public ServerEditWindow()
     {

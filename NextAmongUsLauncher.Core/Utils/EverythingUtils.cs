@@ -4,7 +4,7 @@ namespace NextAmongUsLauncher.Core.Utils;
 
 public class EverythingUtils
 {
-    private readonly EverythingSharp.Base? Everything = EverythingSharp.Base.Get();
+    public readonly EverythingSharp.Base? Everything = EverythingSharp.Base.Get();
 
     public static Everything? Everything64;
     
@@ -21,18 +21,16 @@ public class EverythingUtils
     private const string URL =
         "https://raw.githubusercontent.com/Huier-Huang/EverythingSharp/master/EverythingSharp/EverythingSharp/DLL";
 
-    public EverythingUtils()
+    private EverythingUtils()
     {
-        if (Directory.Exists("./DLL"))
-            Directory.CreateDirectory("./DLL");
 
-        if (File.Exists("./DLL/Everything32.dll") && Everything is Everything everything32)
+        if (File.Exists($"{LauncherDirectory.Instance?.DLL_PATH}/Everything32.dll") && Everything is Everything everything32)
         {
             DownloadEverything("./DLL/", "Everything32.dll");
             Everything32 = everything32;
         }
 
-        if (File.Exists("./DLL/Everything64.dll") && Everything is Everything everything64)
+        if (File.Exists($"{LauncherDirectory.Instance?.DLL_PATH}/Everything64.dll") && Everything is Everything everything64)
         {
             DownloadEverything("./DLL/", "Everything64.dll");
             Everything64 = everything64;
