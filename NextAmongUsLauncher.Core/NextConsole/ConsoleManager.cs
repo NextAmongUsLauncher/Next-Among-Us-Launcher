@@ -1,4 +1,5 @@
 using System.Text;
+using NextAmongUsLauncher.Core.NextConsole.Logs;
 using Vanara.PInvoke;
 
 namespace NextAmongUsLauncher.Core.NextConsole;
@@ -11,6 +12,9 @@ public class ConsoleManager
     internal bool ConsoleIsPresence => HWND != IntPtr.Zero;
     internal bool ConsoleIsOpen { get; private set; }
     public TextWriter? ConsoleOut { get; private set; }
+
+    private ConsoleLogListener? _consoleLogListener;
+    
 
     private string Title;
 
@@ -28,6 +32,8 @@ public class ConsoleManager
         Console.OutputEncoding = Encoding.UTF8;
         ConsoleOut = Console.Out;
         ConsoleIsOpen = true;
+        
+        Logger.Instance.RegisterListener(_consoleLogListener = new ConsoleLogListener(this));
     }
 
     public void CloseConsole()
@@ -35,12 +41,13 @@ public class ConsoleManager
         Kernel32.FreeConsole();
         HWND = IntPtr.Zero;
         ConsoleIsOpen = false;
+
+        if (_consoleLogListener != null) 
+            Logger.Instance.UnregisterListener(_consoleLogListener);
     }
 
-    public void SetConsoleTitle(string title)
-    {
-        
-    }
+    public void SetConsoleTitle(string title) =>
+        Console.Title = Title = title;
     
     public void Show()
     {

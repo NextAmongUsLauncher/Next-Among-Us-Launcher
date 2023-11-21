@@ -1,8 +1,8 @@
 namespace NextAmongUsLauncher.Core.Base;
 
-public class TextNode
+public class TextNode : IDisposable
 {
-    public List<TextNode> AllNodes { get; set; } = new();
+    public static List<TextNode> AllNodes { get; set; } = new();
     
     public TextNode? Parent { get; set; }
     
@@ -12,18 +12,39 @@ public class TextNode
 
     public string Key;
 
-    public int Id;
+    public int Id { get; private set; }
 
     public TextNode(string text, string key)
     {
         Text = text;
         Key = key;
-        Id = AllNodes.Count;        
+        Id = GetId();        
         AllNodes.Add(this);
     }
 
-    public override string? ToString()
+    private static int GetId()
     {
-        return null;
+        var id = AllNodes.Count;
+        while (AllNodes.Any(n => n.Id == id))
+        {
+            id++;
+        }
+
+        return id;
+    }
+
+    public void Dispose()
+    {
+        AllNodes.Remove(this);
+        Parent = null;
+        Children = Array.Empty<TextNode>();
+        Text = string.Empty;
+        Key = string.Empty;
+        Id = -1;
+    }
+    
+    ~TextNode()
+    {
+        Dispose();
     }
 }

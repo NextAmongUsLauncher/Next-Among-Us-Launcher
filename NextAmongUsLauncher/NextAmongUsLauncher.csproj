@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net7-windows10.0.22621.0</TargetFramework>
+        <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
         <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
         <RootNamespace>NextAmongUsLauncher</RootNamespace>
         <ApplicationManifest>app.manifest</ApplicationManifest>
-        <Platforms>x86;x64;</Platforms>
-        <RuntimeIdentifiers>win10-x86;win10-x64;</RuntimeIdentifiers>
+        <Platforms>x86;x64;ARM64</Platforms>
+        <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
         <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
         <UseWinUI>true</UseWinUI>
         <EnableMsixTooling>true</EnableMsixTooling>
@@ -14,16 +14,19 @@
         <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <ApplicationIcon>../NextAmongUsLauncher.Resource/favicon.ico</ApplicationIcon>
+        <UseRidGraph>true</UseRidGraph>
+        <TrimmerRootAssembly>true</TrimmerRootAssembly>
+        <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
         <PackageReference Include="CommunityToolkit.WinUI" Version="7.1.2"/>
         <PackageReference Include="CommunityToolkit.WinUI.Helpers" Version="8.0.230907"/>
         <PackageReference Include="CommunityToolkit.WinUI.UI" Version="7.1.2"/>
         <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2"/>
         <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Core" Version="7.1.2"/>
-        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231008000"/>
+        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231115000"/>
         <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.25936-preview"/>
     </ItemGroup>
 

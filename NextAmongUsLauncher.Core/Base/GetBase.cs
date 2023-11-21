@@ -1,4 +1,4 @@
-namespace NextAmongUsLauncher.Core;
+namespace NextAmongUsLauncher.Core.Base;
 
 public class GetBase<T> where T : class, new()
 {

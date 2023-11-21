@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Reflection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using NextAmongUsLauncher.Core;
 using NextAmongUsLauncher.Core.NextConsole;
-using NextAmongUsLauncher.Core.Utils;
 
 namespace NextAmongUsLauncher;
 
@@ -31,6 +31,11 @@ public sealed class Launcher
     public ConsoleManager ConsoleManager { get; private set; }
     
     /// <summary>
+    /// 管理游戏
+    /// </summary>
+    public GameManager GameManager { get; private set; }
+    
+    /// <summary>
     ///  所有窗口
     /// </summary>
     public HashSet<Window> AllWindow { get; private set; } = new();
@@ -40,8 +45,14 @@ public sealed class Launcher
     /// </summary>
     public HashSet<Page> AllPage { get; private set; } = new();
     
+    /// <summary>
+    /// 启动器版本号
+    /// </summary>
+    public static readonly Version LauncherVersion  = new(1, 0, 0);
+    
     public Launcher(Window Window)
     {
+        Assembly.GetExecutingAssembly().GetName().Version = LauncherVersion;
         Instance = this;
         MainWindow = Window;
         MainWindow.Activate();
@@ -49,18 +60,17 @@ public sealed class Launcher
         Start();
     }
 
-    internal void Start()
+    private void Start()
     {
 #if DEBUG
         SetDev(true);
 #endif
         
         ConsoleManager = new ConsoleManager("Next Among Us Launcher");
+        GameManager = new GameManager();
         
-        if (IsDev)
-        {
-            ConsoleManager.CreateConsole();
-        }
+        Logger.Initialize(IsDev, ConsoleManager);
+        GameManager.Init();
     }
 
     public void Close()

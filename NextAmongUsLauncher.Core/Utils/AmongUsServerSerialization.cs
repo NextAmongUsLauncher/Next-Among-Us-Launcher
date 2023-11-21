@@ -1,7 +1,13 @@
+using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.Unicode;
 using NextAmongUsLauncher.Core.Base;
+using NextAmongUsLauncher.Core.NextConsole;
 
 namespace NextAmongUsLauncher.Core.Utils;
+
 
 public class AmongUsServerSerialization
 {
@@ -13,20 +19,25 @@ public class AmongUsServerSerialization
     public AmongUsServerSerialization() {}
 
     
+    [JsonPropertyOrder(0)]
     public int CurrentRegionIdx { get; private set; }
     
-    
+    [JsonIgnore]
     public int ServerCount { get; private set; }
-
-
+    
+    [JsonIgnore]
     public string? ServerConfigString { get; private set; }
     
-
+    [JsonPropertyName("Regions"), JsonPropertyOrder(1)]
     public List<Server>? AllServer { get; private set; }
 
-    public void Serialization()
+    public string Serialization()
     {
-        
+        var String = JsonSerializer.Serialize(this, new JsonSerializerOptions
+        {
+            Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs)
+        });
+        return String;
     }
 
     public void Deserialization(string? serverConfigString = null)
@@ -58,7 +69,7 @@ public class AmongUsServerSerialization
                      region.GetProperty("$type").GetString()!,
                      region.GetProperty("Name").GetString()!,
                      region.GetProperty("PingServer").GetString()!,
-                     region.GetProperty("TargetServer").GetString(),
+                     Get(region, "TargetServer"),
                      region.GetProperty("TranslateName").GetInt32(), 
                      infos
                  ))
@@ -67,5 +78,10 @@ public class AmongUsServerSerialization
         }
         
         return this;
+
+        string? Get(JsonElement element, string name)
+        {
+            return element.TryGetProperty(name, out element) ? element.GetString() : null;
+        }
     }
 }

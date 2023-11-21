@@ -1,29 +1,42 @@
+using System.Text.Json.Serialization;
+
 namespace NextAmongUsLauncher.Core.Base;
 
 public sealed class Server
+    (
+        string type, 
+        string name, 
+        string pingServer, 
+        string? targetServer, 
+        int translateName, 
+        List<Server.ServerInfo> serverInfos
+        )
 {
-    public Server(string type, string name, string pingServer, string? targetServer, int translateName, List<ServerInfo> serverInfos)
-    {
-        Type = type;
-        Name = name;
-        PingServer = pingServer;
-        TargetServer = targetServer;
-        TranslateName = translateName;
-        ServerInfos = serverInfos;
-    }
+    [JsonPropertyName("$type"), JsonPropertyOrder(0)]
+    public string Type { get; set; } = type;
 
-    public string Type { get; set; }
-    
-    public string Name { get; set; }
-    
-    public string PingServer { get; set; }
-    
-    public List<ServerInfo> ServerInfos { get; set; }
-    
-    public string? TargetServer { get; set; }
-    
-    public int TranslateName { get; set; }
-    
+    [JsonPropertyOrder(1)]
+    public string Name { get; set; } = name;
 
-    public sealed record ServerInfo(string Name, string Ip, ushort Port, bool UseDtls, int Players, int ConnectionFailures);
+    [JsonPropertyOrder(2)]
+    public string PingServer { get; set; } = pingServer;
+
+    [JsonPropertyName("Servers"), JsonPropertyOrder(3)]
+    public List<ServerInfo> ServerInfos { get; set; } = serverInfos;
+
+    [JsonPropertyOrder(4)]
+    public string? TargetServer { get; set; } = targetServer;
+
+    [JsonPropertyOrder(4)]
+    public int TranslateName { get; set; } = translateName;
+
+
+    public sealed record ServerInfo(
+        [property: JsonPropertyOrder(0)]string Name, 
+        [property: JsonPropertyOrder(1)]string Ip, 
+        [property: JsonPropertyOrder(2)]ushort Port, 
+        [property: JsonPropertyOrder(3)]bool UseDtls, 
+        [property: JsonPropertyOrder(4)]int Players, 
+        [property: JsonPropertyOrder(5)]int ConnectionFailures
+        );
 }
