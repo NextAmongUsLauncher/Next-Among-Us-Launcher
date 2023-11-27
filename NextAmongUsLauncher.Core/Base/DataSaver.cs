@@ -6,7 +6,7 @@ public abstract class DataSaver
     
     public abstract string FilePath { get; protected set; }
     
-    public abstract bool Save();
+    public abstract void Save();
     
-    public abstract bool Load();
+    public abstract void Load();
 }

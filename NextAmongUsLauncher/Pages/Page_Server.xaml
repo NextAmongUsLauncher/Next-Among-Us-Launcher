@@ -56,6 +56,10 @@
                 <TextBlock Text="删除"></TextBlock>
             </Button>
             
+            <Button Click="OpenPublicServerWindow">
+                <TextBlock Text="导入公共服务器"></TextBlock>
+            </Button>
+            
             <Button>
                 <TextBlock Text="导入"></TextBlock>
             </Button>

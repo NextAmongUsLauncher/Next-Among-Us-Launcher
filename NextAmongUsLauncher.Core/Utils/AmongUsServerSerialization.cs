@@ -63,21 +63,43 @@ public class AmongUsServerSerialization
         CurrentRegionIdx = root.GetProperty("CurrentRegionIdx").GetInt32();
         ServerCount = regions.Count();
         AllServer = new List<Server>(ServerCount);
-            
-        foreach (var Server in from region in regions let servers = region.GetProperty("Servers").EnumerateArray() let infos = servers.Select(ServerInfo => new Server.ServerInfo(ServerInfo.GetProperty("Name").GetString(), ServerInfo.GetProperty("Ip").GetString(), ServerInfo.GetProperty("Port").GetUInt16(), ServerInfo.GetProperty("UseDtls").GetBoolean(), ServerInfo.GetProperty("Players").GetInt32(), ServerInfo.GetProperty("ConnectionFailures").GetInt32())).ToList() select new Server(
-                 
-                     region.GetProperty("$type").GetString()!,
-                     region.GetProperty("Name").GetString()!,
-                     region.GetProperty("PingServer").GetString()!,
-                     Get(region, "TargetServer"),
-                     region.GetProperty("TranslateName").GetInt32(), 
-                     infos
-                 ))
-        {
-            AllServer.Add(Server);
-        }
+        
+        AllServer.AddRange(regions.GetServerFormArray());
         
         return this;
+    }
+}
+
+public static class FastServerSerialization
+{
+    public static List<Server> GetServerFormArray(this IEnumerable<JsonElement> enumerator)
+    {
+        var AllServer = new List<Server>();
+        AllServer.AddRange(
+            from 
+                region in enumerator 
+            let
+                servers =
+                region.GetProperty("Servers").EnumerateArray() 
+            let infos = 
+                servers.Select(ServerInfo => new 
+                    Server.ServerInfo(
+                        ServerInfo.GetProperty("Name").GetString(), 
+                        ServerInfo.GetProperty("Ip").GetString(), 
+                        ServerInfo.GetProperty("Port").GetUInt16(), 
+                        ServerInfo.GetProperty("UseDtls").GetBoolean(), 
+                        ServerInfo.GetProperty("Players").GetInt32(), 
+                        ServerInfo.GetProperty("ConnectionFailures").GetInt32())
+                ).ToList() 
+            select new Server(
+                region.GetProperty("$type").GetString()!, 
+                region.GetProperty("Name").GetString()!, 
+                region.GetProperty("PingServer").GetString()!,
+                Get(region, "TargetServer"), 
+                region.GetProperty("TranslateName").GetInt32(), infos)
+            );
+
+        return AllServer;
 
         string? Get(JsonElement element, string name)
         {

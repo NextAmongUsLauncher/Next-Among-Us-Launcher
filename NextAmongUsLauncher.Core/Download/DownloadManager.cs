@@ -5,7 +5,7 @@ namespace NextAmongUsLauncher.Core.Download;
 
 public class DownloadManager : GetBase<DownloadManager>
 {
-    public async void TestCDN()
+    public void TestCDN()
     {
         var stopWatch = Stopwatch.StartNew();
         

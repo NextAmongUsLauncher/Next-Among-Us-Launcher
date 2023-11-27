@@ -46,6 +46,11 @@ public sealed class Launcher
     public HashSet<Page> AllPage { get; private set; } = new();
     
     /// <summary>
+    /// 启动器服务
+    /// </summary>
+    public NextService LauncherService { get; private set; }
+    
+    /// <summary>
     /// 启动器版本号
     /// </summary>
     public static readonly Version LauncherVersion  = new(1, 0, 0);
@@ -66,6 +71,7 @@ public sealed class Launcher
         SetDev(true);
 #endif
         
+        LauncherService = NextService.GetInstance(true);
         ConsoleManager = new ConsoleManager("Next Among Us Launcher");
         GameManager = new GameManager();
         

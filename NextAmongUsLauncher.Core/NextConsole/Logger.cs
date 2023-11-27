@@ -1,3 +1,5 @@
+global using Log = NextAmongUsLauncher.Core.NextConsole.Log;
+
 using System.Collections.ObjectModel;
 using NextAmongUsLauncher.Core.NextConsole.Logs;
 
@@ -50,6 +52,14 @@ public class Logger
         }
         
         Listeners.Clear();
+    }
+}
+
+public static class Log
+{
+    public static void Exception(Exception exception)
+    {
+        
     }
 }
 

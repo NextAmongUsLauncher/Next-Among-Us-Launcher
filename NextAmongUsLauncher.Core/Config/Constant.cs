@@ -13,6 +13,8 @@ public static class Constant
     public const string Github_Resource = "Resources";
     
     public const string Github_Repository = "Next-Among-Us-Launcher";
+    
+    public const string CloudFlare_Resource = "resource.aumod.wiki";
 
     public const string Moeyy_Proxy = "moeyy.cn/gh-proxy";
     

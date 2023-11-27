@@ -25,8 +25,8 @@ public class GameManager
     
     public async void Find()
     {
-        GamePathList.Add(await FindFormDirectoryAsync());
-        GamePathList.Add(await FindFormRegeditAsync());
+        /*GamePathList.Add(await FindFormDirectoryAsync());*/
+        /*GamePathList.Add(await FindFormRegeditAsync());*/
     }
     
     /// <summary>
