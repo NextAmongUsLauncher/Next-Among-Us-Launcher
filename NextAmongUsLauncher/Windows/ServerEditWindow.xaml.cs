@@ -10,14 +10,11 @@ namespace NextAmongUsLauncher.Windows;
 
 public partial class ServerEditWindow : Window
 {
+    private ItemClickEventArgs _Item;
     private AmongUsServerSerialization _serialization;
 
     private Server CurrentServer;
 
-    private ItemClickEventArgs _Item;
-    
-    public new static ServerEditWindow Current { get; private set; }
-    
     public ServerEditWindow()
     {
         InitializeComponent();
@@ -25,9 +22,11 @@ public partial class ServerEditWindow : Window
         AppWindow.Title = "Server Edit";
         AppWindow.Resize(new SizeInt32(400, 400));
         AppWindow.Destroying += OnDestroy;
-        Launcher.Instance.AllWindow.Add(this);
+        Instance.AllWindow.Add(this);
         Current = this;
     }
+
+    public new static ServerEditWindow Current { get; private set; }
 
     public void Set(AmongUsServerSerialization serialization)
     {
@@ -49,7 +48,7 @@ public partial class ServerEditWindow : Window
 
     private void OnDestroy(AppWindow appWindow, object sender)
     {
-        Launcher.Instance.AllWindow.Remove(this);
+        Instance.AllWindow.Remove(this);
         Current = null;
     }
 
@@ -59,29 +58,26 @@ public partial class ServerEditWindow : Window
         {
             Current.Set(server);
             Current.Set(serialization);
-            
+
             if (Current.AppWindow.IsVisible) return Current;
             Current.AppWindow.Show();
             Current.AppWindow.MoveInZOrderAtTop();
 
             return Current;
         }
-        
+
         ServerEditWindow EditWindow;
-        if (Launcher.Instance.AllWindow.Any(n => n is ServerEditWindow))
+        if (Instance.AllWindow.Any(n => n is ServerEditWindow))
         {
-            EditWindow = Launcher.Instance.AllWindow.First(n => n is ServerEditWindow) as ServerEditWindow;
-            if (!EditWindow!.AppWindow.IsVisible)
-            {
-                EditWindow!.AppWindow.Show();
-            }
+            EditWindow = Instance.AllWindow.First(n => n is ServerEditWindow) as ServerEditWindow;
+            if (!EditWindow!.AppWindow.IsVisible) EditWindow!.AppWindow.Show();
         }
         else
         {
             EditWindow = new ServerEditWindow();
             EditWindow.Activate();
         }
-        
+
         EditWindow.Set(server);
         EditWindow.Set(serialization);
         EditWindow.AppWindow.MoveInZOrderAtTop();

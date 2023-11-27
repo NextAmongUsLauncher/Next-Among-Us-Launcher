@@ -6,6 +6,4 @@ public static class DownloadUtils
     {
         return string.Join("/", paths);
     }
-    
-    
 }

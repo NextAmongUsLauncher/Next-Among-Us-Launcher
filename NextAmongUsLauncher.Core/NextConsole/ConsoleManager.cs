@@ -8,13 +8,9 @@ public class ConsoleManager
 {
     private static HWND HWND;
     private static User32.WINDOWINFO _windowinfo;
-    
-    internal bool ConsoleIsPresence => HWND != IntPtr.Zero;
-    internal bool ConsoleIsOpen { get; private set; }
-    public TextWriter? ConsoleOut { get; private set; }
 
     private ConsoleLogListener? _consoleLogListener;
-    
+
 
     private string Title;
 
@@ -22,7 +18,11 @@ public class ConsoleManager
     {
         Title = title;
     }
-    
+
+    internal bool ConsoleIsPresence => HWND != IntPtr.Zero;
+    internal bool ConsoleIsOpen { get; private set; }
+    public TextWriter? ConsoleOut { get; private set; }
+
     public void CreateConsole()
     {
         Kernel32.AllocConsole();
@@ -32,7 +32,7 @@ public class ConsoleManager
         Console.OutputEncoding = Encoding.UTF8;
         ConsoleOut = Console.Out;
         ConsoleIsOpen = true;
-        
+
         Logger.Instance.RegisterListener(_consoleLogListener = new ConsoleLogListener(this));
     }
 
@@ -42,17 +42,19 @@ public class ConsoleManager
         HWND = IntPtr.Zero;
         ConsoleIsOpen = false;
 
-        if (_consoleLogListener != null) 
+        if (_consoleLogListener != null)
             Logger.Instance.UnregisterListener(_consoleLogListener);
     }
 
-    public void SetConsoleTitle(string title) =>
+    public void SetConsoleTitle(string title)
+    {
         Console.Title = Title = title;
-    
+    }
+
     public void Show()
     {
         if (!ConsoleIsPresence) return;
-        
+
         User32.ShowWindow(HWND, ShowWindowCommand.SW_SHOWNORMAL);
         ConsoleIsOpen = true;
     }
@@ -61,7 +63,7 @@ public class ConsoleManager
     public void Hide()
     {
         if (!ConsoleIsPresence) return;
-        
+
         User32.ShowWindow(HWND, ShowWindowCommand.SW_HIDE);
         ConsoleIsOpen = false;
     }
