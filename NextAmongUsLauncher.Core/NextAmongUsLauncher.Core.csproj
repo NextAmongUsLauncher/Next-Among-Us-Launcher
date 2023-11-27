@@ -7,7 +7,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <PackageReference Include="EverythingSharp.MengChu" Version="1.0.0" />
+        <PackageReference Include="EverythingSharp.MengChu" Version="1.0.1" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Ini" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />

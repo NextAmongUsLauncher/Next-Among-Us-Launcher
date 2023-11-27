@@ -23,16 +23,13 @@ public class EverythingUtils
 
     private EverythingUtils()
     {
-
-        if (File.Exists($"{LauncherDirectory.Instance?.DLL_PATH}/Everything32.dll") && Everything is Everything everything32)
+        if (Everything is Everything everything32)
         {
-            DownloadEverything("./DLL/", "Everything32.dll");
             Everything32 = everything32;
         }
 
-        if (File.Exists($"{LauncherDirectory.Instance?.DLL_PATH}/Everything64.dll") && Everything is Everything everything64)
+        if (Everything is Everything everything64)
         {
-            DownloadEverything("./DLL/", "Everything64.dll");
             Everything64 = everything64;
         }
     }

@@ -33,6 +33,7 @@ public sealed partial class Page_Server : Page
         $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}Low/Innersloth/Among Us/regionInfo.json";
 
     public Server? CurrentServer;
+    
 
     public Page_Server()
     {
@@ -43,7 +44,7 @@ public sealed partial class Page_Server : Page
         TextReader reader = new StreamReader(stream, Encoding.UTF8);
         ServerSerialization.Deserialization(reader.ReadToEnd());
         Servers = new ObservableCollection<Server>(ServerSerialization.AllServer!);
-        Launcher.Instance.MainWindow.AppWindow.Changed += OnWindowChanged;
+        Instance.MainWindow.AppWindow.Changed += OnWindowChanged;
     }
 
     private void OnWindowChanged(AppWindow sender, AppWindowChangedEventArgs args)
@@ -67,8 +68,7 @@ public sealed partial class Page_Server : Page
     private void OpenPublicServerWindow(object sender, RoutedEventArgs e)
     {
         DownloadPublicServers();
-        var window = new PublicServerWindow(new ObservableCollection<Server>(PublicServers!));
-        window.Activate();
+        PublicServerWindow.OpenWindow(this);
     }
 
     private void DownloadPublicServers(bool gitee = false)
@@ -80,7 +80,7 @@ public sealed partial class Page_Server : Page
         
         var url = gitee ? GiteeUrl : GithubUrl;
 
-        var Document = string.Empty;
+        string Document;
 
         try
         {
@@ -99,5 +99,18 @@ public sealed partial class Page_Server : Page
         
         var document = JsonDocument.Parse(Document);
         PublicServers = document.RootElement.EnumerateArray().GetServerFormArray();
+    }
+
+    private void RemoveButton_Click(object sender, RoutedEventArgs e)
+    {
+        Servers.Remove(CurrentServer!);
+    }
+
+    private void AddButton_Click(object sender, RoutedEventArgs e)
+    {
+    }
+
+    private void ImportButton_Click(object sender, RoutedEventArgs e)
+    {
     }
 }

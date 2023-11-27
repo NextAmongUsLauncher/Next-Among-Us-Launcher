@@ -1,10 +1,8 @@
-using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
 using NextAmongUsLauncher.Core.Base;
-using NextAmongUsLauncher.Core.NextConsole;
 
 namespace NextAmongUsLauncher.Core.Utils;
 
@@ -15,43 +13,46 @@ public class AmongUsServerSerialization
     {
         ServerConfigString = serverConfigString;
     }
-    
-    public AmongUsServerSerialization() {}
+
+    public AmongUsServerSerialization()
+    {
+    }
+
+
+    [JsonPropertyOrder(0)] 
+    public int CurrentRegionIdx { get; private set; }
 
     
-    [JsonPropertyOrder(0)]
-    public int CurrentRegionIdx { get; private set; }
-    
-    [JsonIgnore]
+    [JsonIgnore] 
     public int ServerCount { get; private set; }
+
     
-    [JsonIgnore]
+    [JsonIgnore] 
     public string? ServerConfigString { get; private set; }
+
     
     [JsonPropertyName("Regions"), JsonPropertyOrder(1)]
     public List<Server>? AllServer { get; private set; }
 
-    public string Serialization()
+    
+    [JsonIgnore] 
+    public readonly JsonSerializerOptions _SerializerOptions = new()
     {
-        var String = JsonSerializer.Serialize(this, new JsonSerializerOptions
-        {
-            Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs)
-        });
-        return String;
-    }
+        Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs)
+    };
+
+    
+    public string Serialization() =>
+        JsonSerializer.Serialize(this, _SerializerOptions);
 
     public void Deserialization(string? serverConfigString = null)
     {
         if (serverConfigString != null)
-        {
             ServerConfigString = serverConfigString;
-        }
 
         if (ServerConfigString == null)
-        {
             return;
-        }
-        
+
         DeserializationDocument(JsonDocument.Parse(ServerConfigString));
     }
 
@@ -59,14 +60,40 @@ public class AmongUsServerSerialization
     {
         var root = document.RootElement;
         var regions = root.GetProperty("Regions").EnumerateArray();
-        
+
         CurrentRegionIdx = root.GetProperty("CurrentRegionIdx").GetInt32();
         ServerCount = regions.Count();
         AllServer = new List<Server>(ServerCount);
-        
+
         AllServer.AddRange(regions.GetServerFormArray());
-        
+
         return this;
+    }
+
+    public void Read(Stream stream)
+    {
+        using TextReader reader = new StreamReader(stream);
+        ServerConfigString = reader.ReadToEnd();
+    }
+
+    public void Read(string path)
+    {
+        if (!File.Exists(path))
+            return;
+
+        Read(File.OpenRead(path));
+    }
+
+    public void Write(Stream stream)
+    {
+        using TextWriter writer = new StreamWriter(stream);
+        writer.Write(ServerConfigString);
+    }
+    
+    public void Write(string path)
+    {
+        using var file = File.Open(path, FileMode.OpenOrCreate, FileAccess.Write);
+        Write(file);
     }
 }
 

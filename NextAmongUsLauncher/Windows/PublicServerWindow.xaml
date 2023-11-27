@@ -14,16 +14,16 @@
     </Window.SystemBackdrop>
 
     <Grid RowDefinitions="Auto, *">
-        <ListView ItemsSource="{x:Bind Servers}">
+        <ListView ItemsSource="{x:Bind Servers}" x:Name="ListView" ItemClick="ListView_OnItemClick" IsItemClickEnabled="True">
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="base:Server">
+                <DataTemplate x:DataType="base:Server" x:Name="data">
                     <StackPanel Orientation="Horizontal" Padding="5, 10, 5, 10">
                         <StackPanel Orientation="Vertical">
                             <TextBlock Text="{x:Bind Name}" FontSize="22" FontWeight="Bold"></TextBlock>
                                     
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{x:Bind  ServerInfos[0].Ip}" FontSize="19" Margin="4, 0, 4, 0"></TextBlock>
-                                <TextBlock Text="{x:Bind ServerInfos[0].Port}" FontSize="19"></TextBlock>
+                                <TextBlock Text="{x:Bind  ServerInfos[0].Ip}" FontSize="19" Margin="4, 0, 4, 0"/>
+                                <TextBlock Text="{x:Bind ServerInfos[0].Port}" FontSize="19"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>

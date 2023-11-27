@@ -9,7 +9,5 @@ public class EpicPlatform(string gameExePath) : Platform(gameExePath)
     
     public override Process? GameProcess { get; protected set; }
 
-    public override void StartGame()
-    {
-    }
+
 }

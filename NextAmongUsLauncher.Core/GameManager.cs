@@ -19,14 +19,13 @@ public class GameManager
 
     public void Init()
     {
-        Find();
-        
+        /*Find();*/
     }
     
     public async void Find()
     {
-        /*GamePathList.Add(await FindFormDirectoryAsync());*/
-        /*GamePathList.Add(await FindFormRegeditAsync());*/
+        GamePathList.Add(await FindFormDirectoryAsync());
+        GamePathList.Add(await FindFormRegeditAsync());
     }
     
     /// <summary>
@@ -35,7 +34,7 @@ public class GameManager
     /// <returns>Exe路径</returns>
     public async ValueTask<List<string>> FindFormDirectoryAsync()
     {
-        var list = (EverythingUtils.Instance.Everything?.Search(AmongUsExeName).Select(VarPath => VarPath.FullPath) ?? Array.Empty<string>()).ToList();
+        var list = (EverythingUtils.Instance.Everything?.Search(AmongUsExeName).Select(VarPath => VarPath.FullPath).Where(n => n.EndsWith(AmongUsExeName)) ?? Array.Empty<string>()).ToList();
         return await ValueTask.FromResult(list);
     }
     

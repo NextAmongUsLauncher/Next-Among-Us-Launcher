@@ -7,11 +7,22 @@ public abstract class Platform(string gameExePath)
 {
     public readonly string GameExePath = gameExePath;
 
+    public string? GameDirectory = Path.GetDirectoryName(gameExePath);
+
+    public string? BepInExDirectory;
+    
+    public string? BepInExPluginsDirectory;
+    
+    public string? BepInExConfigDirectory;
+
     public abstract GamePlatform GamePlatform { get; }
     
     public abstract Process? GameProcess { get; protected set; }
 
-    public abstract void StartGame();
+    public virtual void StartGame()
+    {
+        GameProcess = Process.Start(GameExePath);
+    }
 
     public virtual void DownloadGame()
     {
@@ -35,6 +46,10 @@ public abstract class Platform(string gameExePath)
 
     public static Platform? GetPlatform(string path)
     {
+        if (!File.Exists(path))
+            return null;
+        
+        Console.WriteLine(path);
         var fileInfo = new FileInfo(path);
         var directory = fileInfo.Directory;
         
