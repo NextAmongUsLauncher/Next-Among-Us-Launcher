@@ -6,9 +6,13 @@ using NextAmongUsLauncher.Core.Base;
 
 namespace NextAmongUsLauncher.Core.Utils;
 
-
 public class AmongUsServerSerialization
 {
+    [JsonIgnore] public readonly JsonSerializerOptions _SerializerOptions = new()
+    {
+        Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs)
+    };
+
     public AmongUsServerSerialization(string? serverConfigString)
     {
         ServerConfigString = serverConfigString;
@@ -19,31 +23,24 @@ public class AmongUsServerSerialization
     }
 
 
-    [JsonPropertyOrder(0)] 
-    public int CurrentRegionIdx { get; private set; }
+    [JsonPropertyOrder(0)] public int CurrentRegionIdx { get; private set; }
 
-    
-    [JsonIgnore] 
-    public int ServerCount { get; private set; }
 
-    
-    [JsonIgnore] 
-    public string? ServerConfigString { get; private set; }
+    [JsonIgnore] public int ServerCount { get; private set; }
 
-    
-    [JsonPropertyName("Regions"), JsonPropertyOrder(1)]
+
+    [JsonIgnore] public string? ServerConfigString { get; private set; }
+
+
+    [JsonPropertyName("Regions")]
+    [JsonPropertyOrder(1)]
     public List<Server>? AllServer { get; private set; }
 
-    
-    [JsonIgnore] 
-    public readonly JsonSerializerOptions _SerializerOptions = new()
-    {
-        Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs)
-    };
 
-    
-    public string Serialization() =>
-        JsonSerializer.Serialize(this, _SerializerOptions);
+    public string Serialization()
+    {
+        return JsonSerializer.Serialize(this, _SerializerOptions);
+    }
 
     public void Deserialization(string? serverConfigString = null)
     {
@@ -89,7 +86,7 @@ public class AmongUsServerSerialization
         using TextWriter writer = new StreamWriter(stream);
         writer.Write(ServerConfigString);
     }
-    
+
     public void Write(string path)
     {
         using var file = File.Open(path, FileMode.OpenOrCreate, FileAccess.Write);
@@ -103,28 +100,28 @@ public static class FastServerSerialization
     {
         var AllServer = new List<Server>();
         AllServer.AddRange(
-            from 
-                region in enumerator 
+            from
+                region in enumerator
             let
                 servers =
-                region.GetProperty("Servers").EnumerateArray() 
-            let infos = 
-                servers.Select(ServerInfo => new 
+                region.GetProperty("Servers").EnumerateArray()
+            let infos =
+                servers.Select(ServerInfo => new
                     Server.ServerInfo(
-                        ServerInfo.GetProperty("Name").GetString(), 
-                        ServerInfo.GetProperty("Ip").GetString(), 
-                        ServerInfo.GetProperty("Port").GetUInt16(), 
-                        ServerInfo.GetProperty("UseDtls").GetBoolean(), 
-                        ServerInfo.GetProperty("Players").GetInt32(), 
+                        ServerInfo.GetProperty("Name").GetString(),
+                        ServerInfo.GetProperty("Ip").GetString(),
+                        ServerInfo.GetProperty("Port").GetUInt16(),
+                        ServerInfo.GetProperty("UseDtls").GetBoolean(),
+                        ServerInfo.GetProperty("Players").GetInt32(),
                         ServerInfo.GetProperty("ConnectionFailures").GetInt32())
-                ).ToList() 
+                ).ToList()
             select new Server(
-                region.GetProperty("$type").GetString()!, 
-                region.GetProperty("Name").GetString()!, 
+                region.GetProperty("$type").GetString()!,
+                region.GetProperty("Name").GetString()!,
                 region.GetProperty("PingServer").GetString()!,
-                Get(region, "TargetServer"), 
+                Get(region, "TargetServer"),
                 region.GetProperty("TranslateName").GetInt32(), infos)
-            );
+        );
 
         return AllServer;
 

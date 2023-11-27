@@ -4,26 +4,21 @@ namespace NextAmongUsLauncher.Core;
 
 public class ModManager : GetBase<ModManager>
 {
-    public ModManager()
-    {
-    }
-    
-    public List<Mod> AllMod { get; private set; } = new();
     private Mod? CurrentMod;
+
+    public List<Mod> AllMod { get; private set; } = new();
 
     public void LoadMods(DirectoryInfo directory)
     {
-        
     }
 
     public void ClearMods()
     {
-        
     }
 
     public Mod GetCurrentMod()
     {
-        if (CurrentMod != default ) return CurrentMod;
+        if (CurrentMod != default) return CurrentMod;
         var mod = new Mod
         {
             Name = "None",

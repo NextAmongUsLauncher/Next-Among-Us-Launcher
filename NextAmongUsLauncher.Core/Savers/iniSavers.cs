@@ -5,21 +5,38 @@ namespace NextAmongUsLauncher.Core.Savers;
 
 public sealed class iniSavers : DataSaver
 {
-    public static readonly List<iniSavers> AllIniSaversList = new ();
+    public static readonly List<iniSavers> AllIniSaversList = new();
 
-    public static iniSavers? Get(string fileName, string? filePath = null)
+    private iniSavers(string fileName, string? filePath = null)
     {
-        return AllIniSaversList.Any(n => n.FileName == fileName || n.FilePath == filePath || n.FileName == fileName + ".ini") ? AllIniSaversList.First(_ => Contains()) : new iniSavers(fileName, filePath);
+        if (!fileName.EndsWith(".ini"))
+            fileName += ".ini";
 
-        bool Contains() =>
-            AllIniSaversList.Any(n => n.FileName == fileName || n.FilePath == filePath);
+        FileName = fileName;
+
+        FilePath = filePath ?? Path.Combine(LauncherDirectory.Instance?.CONFIG_PATH!, fileName);
+
+        AllIniSaversList.Add(this);
     }
 
-    public Dictionary<string, Dictionary<string, string>> Data { get; private set; } = new ();
-    
+    public Dictionary<string, Dictionary<string, string>> Data { get; } = new();
+
     public override string FileName { get; protected set; }
 
     public override string FilePath { get; protected set; }
+
+    public static iniSavers? Get(string fileName, string? filePath = null)
+    {
+        return AllIniSaversList.Any(n =>
+            n.FileName == fileName || n.FilePath == filePath || n.FileName == fileName + ".ini")
+            ? AllIniSaversList.First(_ => Contains())
+            : new iniSavers(fileName, filePath);
+
+        bool Contains()
+        {
+            return AllIniSaversList.Any(n => n.FileName == fileName || n.FilePath == filePath);
+        }
+    }
 
     public override void Save()
     {
@@ -28,10 +45,7 @@ public sealed class iniSavers : DataSaver
         foreach (var (Current, varData) in Data)
         {
             writer.WriteLine($"[{Current}]");
-            foreach (var (key, value) in varData)
-            {
-                writer.WriteLine($"{key}={value}");
-            }
+            foreach (var (key, value) in varData) writer.WriteLine($"{key}={value}");
         }
     }
 
@@ -45,7 +59,7 @@ public sealed class iniSavers : DataSaver
         {
             if (line.Contains('['))
                 Current = line.Replace("[", "").Replace("]", "");
-            
+
             if (!line.Contains('[') && Current == string.Empty)
                 continue;
 
@@ -56,27 +70,23 @@ public sealed class iniSavers : DataSaver
             var Value = line.Split("=")[1].Trim();
 
             Data[Current][Key] = Value;
-            
+
             line = reader.ReadLine();
         }
     }
 
-    public void Add(string data, string Key, string Value) =>
-        Data[data][Key] = Value;
-
-    public void Remove(string data) => Data.Remove(data);
-
-    public void Remove(string data, string key) => Data[data].Remove(key);
-
-    private iniSavers(string fileName, string? filePath = null)
+    public void Add(string data, string Key, string Value)
     {
-        if (!fileName.EndsWith(".ini"))
-            fileName += ".ini";
-        
-        FileName = fileName;
+        Data[data][Key] = Value;
+    }
 
-        FilePath = filePath ?? Path.Combine(LauncherDirectory.Instance?.CONFIG_PATH!, fileName);
-        
-        AllIniSaversList.Add(this);
+    public void Remove(string data)
+    {
+        Data.Remove(data);
+    }
+
+    public void Remove(string data, string key)
+    {
+        Data[data].Remove(key);
     }
 }

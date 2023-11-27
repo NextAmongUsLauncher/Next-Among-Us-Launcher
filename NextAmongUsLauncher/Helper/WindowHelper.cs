@@ -14,7 +14,7 @@ public static class WindowHelper
             WindowTop(window);
             return window;
         }
-        
+
         var NewWindow = new T();
         NewWindow.Activate();
 
@@ -28,15 +28,13 @@ public static class WindowHelper
 
         if (!window.Visible)
             window.AppWindow?.Show();
-        
+
         window.AppWindow?.MoveInZOrderAtTop();
     }
 }
 
 public class NextWindow : Window
 {
-    public bool FastCreate { get; protected set; } = false;
-    
     public NextWindow()
     {
         Instance.AllWindow.Add(this);
@@ -46,13 +44,13 @@ public class NextWindow : Window
             Activate();
     }
 
+    public bool FastCreate { get; protected set; } = false;
+
     public virtual void OnClose(object sender, WindowEventArgs eventArgs)
     {
-        
     }
 
     public virtual void OnDestroy(AppWindow sender, object args)
     {
-        
     }
 }

@@ -1,7 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-
 namespace NextAmongUsLauncher.Pages;
 
 public sealed partial class Page_Setting : Page

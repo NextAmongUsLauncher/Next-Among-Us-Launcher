@@ -13,7 +13,7 @@
     </Window.SystemBackdrop>
 
     <Grid RowDefinitions="Auto, *">
-        <TextBlock x:Name="ServerName"></TextBlock>
+        <TextBlock x:Name="ServerName" />
     </Grid>
 
 </Window>

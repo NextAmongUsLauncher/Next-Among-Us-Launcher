@@ -4,7 +4,7 @@ public abstract class LogEventArgs(LogLevel logLevel, ILogSource source, object 
 {
     public LogLevel LogLevel { get; } = logLevel;
 
-    public ILogSource  Source { get; } = source;
+    public ILogSource Source { get; } = source;
 
     public object Data { get; } = data;
 }

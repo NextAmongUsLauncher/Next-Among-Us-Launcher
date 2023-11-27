@@ -3,11 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Security;
-using System.Security.Authentication;
 using System.Text;
 using System.Text.Json;
 using Microsoft.UI.Windowing;
@@ -18,22 +14,18 @@ using NextAmongUsLauncher.Core.NextConsole;
 using NextAmongUsLauncher.Core.Utils;
 using NextAmongUsLauncher.Windows;
 
-
 namespace NextAmongUsLauncher.Pages;
 
 public sealed partial class Page_Server : Page
 {
-    public ObservableCollection<Server> Servers = new();
-
-    public List<Server>? PublicServers = null;
-
-    public AmongUsServerSerialization ServerSerialization { get; private set; }
-
     public static readonly string RegionConfigPath =
         $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}Low/Innersloth/Among Us/regionInfo.json";
 
     public Server? CurrentServer;
-    
+
+    public List<Server>? PublicServers;
+    public ObservableCollection<Server> Servers = new();
+
 
     public Page_Server()
     {
@@ -46,6 +38,8 @@ public sealed partial class Page_Server : Page
         Servers = new ObservableCollection<Server>(ServerSerialization.AllServer!);
         Instance.MainWindow.AppWindow.Changed += OnWindowChanged;
     }
+
+    public AmongUsServerSerialization ServerSerialization { get; }
 
     private void OnWindowChanged(AppWindow sender, AppWindowChangedEventArgs args)
     {
@@ -77,7 +71,7 @@ public sealed partial class Page_Server : Page
         var GiteeUrl = new Uri("https://gitee.com/bilibili_MC/Resources/raw/main/PublicServerList.json");
         var GithubUrl =
             new Uri("https://raw.githubusercontent.com/NextAmongUsLauncher/Resources/main/PublicServerList.json");
-        
+
         var url = gitee ? GiteeUrl : GithubUrl;
 
         string Document;
@@ -85,7 +79,8 @@ public sealed partial class Page_Server : Page
         try
         {
             var httpClientHandler = new HttpClientHandler();
-            httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) => true;
+            httpClientHandler.ServerCertificateCustomValidationCallback =
+                (message, cert, chain, sslPolicyErrors) => true;
             using var client = new HttpClient(httpClientHandler);
             var res = client.GetAsync(url);
             Document = res.Result.Content.ReadAsStringAsync().Result;
@@ -96,7 +91,7 @@ public sealed partial class Page_Server : Page
             Log.Exception(e);
             return;
         }
-        
+
         var document = JsonDocument.Parse(Document);
         PublicServers = document.RootElement.EnumerateArray().GetServerFormArray();
     }

@@ -8,65 +8,59 @@ namespace NextAmongUsLauncher.Core;
 public class GameManager
 {
     /// <summary>
-    /// Among Us EXE 名称
+    ///     Among Us EXE 名称
     /// </summary>
     public const string AmongUsExeName = "Among Us.exe";
-    
+
     /// <summary>
-    /// 存放寻找的Among Us平台列表
+    ///     存放寻找的Among Us平台列表
     /// </summary>
-    public GamePathList GamePathList { get; private set; } = new();
+    public GamePathList GamePathList { get; } = new();
 
     public void Init()
     {
         /*Find();*/
     }
-    
+
     public async void Find()
     {
         GamePathList.Add(await FindFormDirectoryAsync());
         GamePathList.Add(await FindFormRegeditAsync());
     }
-    
+
     /// <summary>
-    /// 使用Everything寻找Among Us
+    ///     使用Everything寻找Among Us
     /// </summary>
     /// <returns>Exe路径</returns>
     public async ValueTask<List<string>> FindFormDirectoryAsync()
     {
-        var list = (EverythingUtils.Instance.Everything?.Search(AmongUsExeName).Select(VarPath => VarPath.FullPath).Where(n => n.EndsWith(AmongUsExeName)) ?? Array.Empty<string>()).ToList();
+        var list = (EverythingUtils.Instance.Everything?.Search(AmongUsExeName).Select(VarPath => VarPath.FullPath)
+            .Where(n => n.EndsWith(AmongUsExeName)) ?? Array.Empty<string>()).ToList();
         return await ValueTask.FromResult(list);
     }
-    
+
     /// <summary>
-    /// 从注册表寻找Among Us
+    ///     从注册表寻找Among Us
     /// </summary>
     /// <returns>Exe路径</returns>
     public async ValueTask<List<string>> FindFormRegeditAsync()
     {
         var list = new List<string>();
-        
+
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return await ValueTask.FromResult(list);
-        
+
         var registry =
-            Registry.CurrentUser.
-                OpenSubKey("Software")
-                ?.
-                OpenSubKey("Microsoft")
-                ?.
-                OpenSubKey("Windows")
-                ?.
-                OpenSubKey("CurrentVersion")
-                ?.
-                OpenSubKey("Explorer")
-                ?.
-                OpenSubKey("FeatureUsage")
-                ?.
-                OpenSubKey("AppSwitched")
+            Registry.CurrentUser.OpenSubKey("Software")
+                ?.OpenSubKey("Microsoft")
+                ?.OpenSubKey("Windows")
+                ?.OpenSubKey("CurrentVersion")
+                ?.OpenSubKey("Explorer")
+                ?.OpenSubKey("FeatureUsage")
+                ?.OpenSubKey("AppSwitched")
                 ?.GetValueNames().Where(n => n.EndsWith(AmongUsExeName)).ToList();
 
         registry ??= list;
-        
+
         return await ValueTask.FromResult(registry);
     }
 }
@@ -74,7 +68,7 @@ public class GameManager
 public class GamePathList : List<Platform>, ICollection<Platform>
 {
     bool ICollection<Platform>.IsReadOnly => false;
-    
+
     public void Add(string Path)
     {
         if (Exists(n => n.GameExePath == Path)) return;
@@ -85,9 +79,6 @@ public class GamePathList : List<Platform>, ICollection<Platform>
 
     public void Add(IEnumerable<string> list)
     {
-        foreach (var path in list)
-        {
-            Add(path);
-        }
+        foreach (var path in list) Add(path);
     }
 }

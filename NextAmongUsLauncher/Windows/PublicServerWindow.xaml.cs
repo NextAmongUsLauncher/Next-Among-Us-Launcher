@@ -10,11 +10,10 @@ namespace NextAmongUsLauncher.Windows;
 
 public partial class PublicServerWindow : Window
 {
-    public ObservableCollection<Server> Servers;
-
     public Page_Server _pageServer;
 
     public Server _server;
+    public ObservableCollection<Server> Servers;
 
     public PublicServerWindow()
     {
@@ -23,11 +22,15 @@ public partial class PublicServerWindow : Window
         InitializeComponent();
     }
 
-    public PublicServerWindow(Page_Server pageServer) : this() => Set(pageServer);
+    public PublicServerWindow(Page_Server pageServer) : this()
+    {
+        Set(pageServer);
+    }
 
     public void Set(Page_Server pageServer)
     {
-        Servers = new ObservableCollection<Server>(pageServer.PublicServers!.Where(n => !pageServer.Servers.Contains(n)));
+        Servers = new ObservableCollection<Server>(
+            pageServer.PublicServers!.Where(n => !pageServer.Servers.Contains(n)));
         _pageServer = pageServer;
     }
 

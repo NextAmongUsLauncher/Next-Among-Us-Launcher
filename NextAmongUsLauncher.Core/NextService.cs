@@ -4,32 +4,11 @@ namespace NextAmongUsLauncher.Core;
 
 public class NextService
 {
-    private static NextService? Instance { get; set; }
-    
-    public static NextService GetInstance(bool Build = false, List<Type>? types = null) {
-        if (Instance != null)
-        {
-            return Instance;
-        }
-        
-        Instance = new NextService();
-
-        if (types != null)
-            Instance.BuildList = types;
-        
-        if (Build)
-            Instance.Build();
-        
-        return Instance;
-    }
-    
     private static IServiceProvider _serviceProvider = null!;
 
     private static bool BuildComplete;
 
-    private List<Type> BuildList = new ();
-
-    public IServiceCollection? _FastService { get; private set; }
+    private List<Type> BuildList = new();
 
     public HashSet<IServiceProvider> ServiceProviders = new();
 
@@ -38,6 +17,25 @@ public class NextService
         _serviceProvider = null!;
         _FastService = null;
         BuildComplete = false;
+    }
+
+    private static NextService? Instance { get; set; }
+
+    public IServiceCollection? _FastService { get; private set; }
+
+    public static NextService GetInstance(bool Build = false, List<Type>? types = null)
+    {
+        if (Instance != null) return Instance;
+
+        Instance = new NextService();
+
+        if (types != null)
+            Instance.BuildList = types;
+
+        if (Build)
+            Instance.Build();
+
+        return Instance;
     }
 
     public void Add(params Type[] types)
@@ -51,35 +49,30 @@ public class NextService
         Destroy();
         _FastService = new ServiceCollection();
     }
-    
+
     public void Build()
     {
         if (BuildComplete) return;
 
         try
         {
-
             if (_FastService != null)
             {
                 _serviceProvider = _FastService.BuildServiceProvider();
                 BuildComplete = true;
             }
-            
+
             var Service = new ServiceCollection();
 
             if (BuildList.Count != 0)
-            {
                 foreach (var VarType in BuildList)
-                {
                     Service.AddSingleton(VarType);
-                }
-            }
-            
+
             // 默认添加
             {
                 Service.AddSingleton<HttpClient>();
             }
-            
+
             _serviceProvider = Service.BuildServiceProvider();
             BuildComplete = true;
         }
@@ -97,7 +90,8 @@ public class NextService
         Instance = null;
     }
 
-    public T? GetService<T>() =>
-        _serviceProvider.GetService<T>();
-
+    public T? GetService<T>()
+    {
+        return _serviceProvider.GetService<T>();
+    }
 }

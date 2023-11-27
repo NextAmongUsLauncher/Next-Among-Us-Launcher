@@ -5,11 +5,10 @@ using NextAmongUsLauncher.Core;
 
 namespace NextAmongUsLauncher.Pages;
 
-
 public sealed partial class Page_Play : Page
 {
-    private ObservableCollection<VersionItem> versions = new ();
-    
+    private readonly ObservableCollection<VersionItem> versions = new();
+
     public Page_Play()
     {
         InitializeComponent();

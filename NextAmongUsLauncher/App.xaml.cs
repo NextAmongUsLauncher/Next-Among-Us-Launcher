@@ -10,12 +10,12 @@ namespace NextAmongUsLauncher;
 /// </summary>
 public partial class App : Application
 {
-    public static Launcher CurrentLauncher { get; private set; }
-
     public App()
     {
         InitializeComponent();
     }
+
+    public static Launcher CurrentLauncher { get; private set; }
 
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
