@@ -20,7 +20,7 @@
                 VerticalAlignment="Stretch"
                 IsItemClickEnabled="True"
                 CanReorderItems="True"
-                ItemsSource="{x:Bind Servers}"
+                ItemsSource="{x:Bind _Servers}"
                 ItemClick="ServersList_OnItemClick"
                 Height="550">
 

@@ -17,6 +17,7 @@
         <UseRidGraph>true</UseRidGraph>
         <TrimmerRootAssembly>true</TrimmerRootAssembly>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+        <JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
     </PropertyGroup>
 
     <ItemGroup>

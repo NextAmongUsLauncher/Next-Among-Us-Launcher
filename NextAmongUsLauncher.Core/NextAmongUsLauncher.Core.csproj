@@ -4,6 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,6 +15,11 @@
         <PackageReference Include="Vanara.Core" Version="4.0.0-beta"/>
         <PackageReference Include="Vanara.PInvoke.Kernel32" Version="4.0.0-beta"/>
         <PackageReference Include="Vanara.PInvoke.User32" Version="4.0.0-beta"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Interfaces\" />
+      <Folder Include="SourceGenerates\" />
     </ItemGroup>
 
 </Project>

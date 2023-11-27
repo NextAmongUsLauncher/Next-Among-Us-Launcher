@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -24,22 +26,49 @@ public sealed partial class Page_Server : Page
     public Server? CurrentServer;
 
     public List<Server>? PublicServers;
-    public ObservableCollection<Server> Servers = new();
+    
+    public static ObservableCollection<Server> Servers = new();
+
+    public ObservableCollection<Server> _Servers = new();
+
+    public bool Downloaded = false;
+
+    private string RegionText = string.Empty;
 
 
     public Page_Server()
     {
         InitializeComponent();
+        
+        ServerSerialization ??= new AmongUsServerSerialization();
+        if (Servers.Count == 0)
+        {
+            using Stream stream = new FileStream(RegionConfigPath, FileMode.Open, FileAccess.Read);
+            TextReader reader = new StreamReader(stream, Encoding.UTF8);
+            ServerSerialization.Deserialization(reader.ReadToEnd());
+            Servers = new ObservableCollection<Server>(ServerSerialization.AllServer!);
+            Servers.CollectionChanged += OnServersChanged;
+        }
 
-        ServerSerialization = new AmongUsServerSerialization();
-        using Stream stream = new FileStream(RegionConfigPath, FileMode.Open, FileAccess.Read);
-        TextReader reader = new StreamReader(stream, Encoding.UTF8);
-        ServerSerialization.Deserialization(reader.ReadToEnd());
-        Servers = new ObservableCollection<Server>(ServerSerialization.AllServer!);
+        _Servers = Servers;
+        Unloaded += OnUnloaded;
         Instance.MainWindow.AppWindow.Changed += OnWindowChanged;
     }
 
-    public AmongUsServerSerialization ServerSerialization { get; }
+    public static AmongUsServerSerialization? ServerSerialization { get; private set; }
+
+    private void OnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+    {
+        using var file = File.Open(RegionConfigPath, FileMode.OpenOrCreate, FileAccess.Write);
+        using var Writer = new StreamWriter(file, Encoding.UTF8);
+        Writer.WriteAsync(RegionText);
+    }
+
+    private void OnServersChanged(object? sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+    {
+        _Servers = Servers;
+        RegionText = ServerSerialization?.Serialization(Servers.ToList())!;
+    }
 
     private void OnWindowChanged(AppWindow sender, AppWindowChangedEventArgs args)
     {
@@ -68,6 +97,8 @@ public sealed partial class Page_Server : Page
     private void DownloadPublicServers(bool gitee = false)
     {
         if (PublicServers != null) return;
+        if (Downloaded) return;
+        
         var GiteeUrl = new Uri("https://gitee.com/bilibili_MC/Resources/raw/main/PublicServerList.json");
         var GithubUrl =
             new Uri("https://raw.githubusercontent.com/NextAmongUsLauncher/Resources/main/PublicServerList.json");
@@ -87,13 +118,16 @@ public sealed partial class Page_Server : Page
         }
         catch (Exception e)
         {
-            DownloadPublicServers(true);
             Log.Exception(e);
+            if (gitee)
+                return;
+            DownloadPublicServers(true);
             return;
         }
 
         var document = JsonDocument.Parse(Document);
         PublicServers = document.RootElement.EnumerateArray().GetServerFormArray();
+        Downloaded = true;
     }
 
     private void RemoveButton_Click(object sender, RoutedEventArgs e)

@@ -37,9 +37,12 @@ public class AmongUsServerSerialization
     public List<Server>? AllServer { get; private set; }
 
 
-    public string Serialization()
+    public string Serialization(List<Server> allServers)
     {
-        return JsonSerializer.Serialize(this, _SerializerOptions);
+        var ser = new AmongUsServerSerialization();
+        ser.AllServer = allServers;
+        ser.CurrentRegionIdx = CurrentRegionIdx;
+        return JsonSerializer.Serialize(ser, _SerializerOptions);
     }
 
     public void Deserialization(string? serverConfigString = null)
