@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using NextAmongUsLauncher.Core.Services;
 
 namespace NextAmongUsLauncher.Core;
 
@@ -70,7 +71,11 @@ public class NextService
 
             // 默认添加
             {
-                Service.AddSingleton<HttpClient>();
+                // 每次
+                Service.AddTransient<HttpClient>();
+                
+                // 实例
+                Service.AddSingleton<ModDownloadService>();
             }
 
             _serviceProvider = Service.BuildServiceProvider();

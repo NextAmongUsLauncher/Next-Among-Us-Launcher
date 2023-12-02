@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using Windows.Storage.Pickers;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -40,11 +41,12 @@ public sealed partial class Page_Server : Page
     {
         InitializeComponent();
         
-        ServerSerialization ??= new AmongUsServerSerialization();
-        if (Servers.Count == 0)
+        
+        if (ServerSerialization == null)
         {
+            ServerSerialization = new AmongUsServerSerialization();
             using Stream stream = new FileStream(RegionConfigPath, FileMode.Open, FileAccess.Read);
-            TextReader reader = new StreamReader(stream, Encoding.UTF8);
+            using TextReader reader = new StreamReader(stream);
             ServerSerialization.Deserialization(reader.ReadToEnd());
             Servers = new ObservableCollection<Server>(ServerSerialization.AllServer!);
             Servers.CollectionChanged += OnServersChanged;
@@ -52,7 +54,6 @@ public sealed partial class Page_Server : Page
 
         _Servers = Servers;
         Unloaded += OnUnloaded;
-        Instance.MainWindow.AppWindow.Changed += OnWindowChanged;
     }
 
     public static AmongUsServerSerialization? ServerSerialization { get; private set; }
@@ -68,11 +69,6 @@ public sealed partial class Page_Server : Page
     {
         _Servers = Servers;
         RegionText = ServerSerialization?.Serialization(Servers.ToList())!;
-    }
-
-    private void OnWindowChanged(AppWindow sender, AppWindowChangedEventArgs args)
-    {
-        ServersList.Height = sender.Size.Height - 100;
     }
 
     private void ServersList_OnItemClick(object sender, ItemClickEventArgs e)
@@ -137,9 +133,29 @@ public sealed partial class Page_Server : Page
 
     private void AddButton_Click(object sender, RoutedEventArgs e)
     {
+        new AddServerWindow().Activate();
     }
 
-    private void ImportButton_Click(object sender, RoutedEventArgs e)
+    private async void ImportButton_Click(object sender, RoutedEventArgs e)
     {
+        var picker = new FileOpenPicker
+        {
+            ViewMode = PickerViewMode.Thumbnail,
+            SuggestedStartLocation = PickerLocationId.PicturesLibrary
+        };
+        picker.FileTypeFilter.Add(".json");
+        var file = await picker.PickSingleFileAsync();
+        if (file == null)
+            return;
+        
+        foreach (var server 
+                 in 
+                 JsonDocument.Parse(File.ReadAllTextAsync(file.Path).Result)
+                     .RootElement.EnumerateArray().
+                     GetServerFormArray().
+                     FindAll(n => !Servers.Contains(n)))
+        {
+            Servers.Add(server);
+        }
     }
 }

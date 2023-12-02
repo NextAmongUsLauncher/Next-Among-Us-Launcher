@@ -19,6 +19,12 @@
         </StackPanel>
 
         <ComboBox
+            Margin="80, 0, 0, 80"
+            Width="300"
+            Height="50"
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
             ItemsSource="{x:Bind versions }">
 
             <ComboBox.ItemTemplate>
