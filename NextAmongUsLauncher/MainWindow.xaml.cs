@@ -6,16 +6,20 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using NextAmongUsLauncher.Pages;
+using WinRT.Interop;
 
 namespace NextAmongUsLauncher;
 
 public sealed partial class MainWindow : Window
 {
-    private readonly Dictionary<NavigationViewItem, Type> _pages;
+    private readonly Dictionary<NavigationViewItem, Type?> _pages;
+
+    public readonly IntPtr HWND;
 
 
     public MainWindow()
     {
+        HWND = WindowNative.GetWindowHandle(this);
         Current = this;
         InitializeComponent();
 
@@ -28,7 +32,7 @@ public sealed partial class MainWindow : Window
         AppWindow.Title = "Next Among Us Launcher";
         AppWindow.SetIcon("favicon.ico");
 
-        _pages = new Dictionary<NavigationViewItem, Type>
+        _pages = new Dictionary<NavigationViewItem, Type?>
         {
             { PlayerPage, typeof(Page_Play) },
             { AboutPage, typeof(Page_About) },
@@ -40,8 +44,8 @@ public sealed partial class MainWindow : Window
         if (CurrentPage == null) Navigate(PlayerPage);
     }
 
-    public new static MainWindow Current { get; private set; }
-    public static NavigationViewItem CurrentPage { get; private set; }
+    public new static MainWindow? Current { get; private set; }
+    public static NavigationViewItem? CurrentPage { get; private set; }
 
 
     private void Main_Navigation_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
@@ -51,17 +55,17 @@ public sealed partial class MainWindow : Window
         Navigate(SelectedItem);
     }
 
-    private void Navigate(Type type)
+    private void Navigate(Type? type)
     {
         Navigate(_pages.FirstOrDefault(n => n.Value == type).Key, type);
     }
 
-    private void Navigate(NavigationViewItem item)
+    private void Navigate(NavigationViewItem? item)
     {
         Navigate(item, _pages[item]);
     }
 
-    private void Navigate(NavigationViewItem item, Type type)
+    private void Navigate(NavigationViewItem? item, Type? type)
     {
         if (item == null || type == null) return;
         Main_NavigationView.SelectedItem = item;

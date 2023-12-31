@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Windows.Storage.Pickers;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
@@ -16,6 +17,7 @@ using NextAmongUsLauncher.Core.Base;
 using NextAmongUsLauncher.Core.NextConsole;
 using NextAmongUsLauncher.Core.Utils;
 using NextAmongUsLauncher.Windows;
+using WinRT.Interop;
 
 namespace NextAmongUsLauncher.Pages;
 
@@ -25,30 +27,25 @@ public sealed partial class Page_Server : Page
         $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}Low/Innersloth/Among Us/regionInfo.json";
 
     public Server? CurrentServer;
-
-    public List<Server>? PublicServers;
     
-    public static ObservableCollection<Server> Servers = new();
+    public static ObservableCollection<Server?> Servers = new();
 
-    public ObservableCollection<Server> _Servers = new();
-
-    public bool Downloaded = false;
-
+    public ObservableCollection<Server?> _Servers;
+    
     private string RegionText = string.Empty;
 
+    private static StreamWriter? _writer;
 
     public Page_Server()
     {
         InitializeComponent();
         
         
-        if (ServerSerialization == null)
+        if (RegionText == string.Empty)
         {
-            ServerSerialization = new AmongUsServerSerialization();
-            using Stream stream = new FileStream(RegionConfigPath, FileMode.Open, FileAccess.Read);
-            using TextReader reader = new StreamReader(stream);
-            ServerSerialization.Deserialization(reader.ReadToEnd());
-            Servers = new ObservableCollection<Server>(ServerSerialization.AllServer!);
+            var regionInfoString = AmongUsServerSerialization.Read(RegionConfigPath);
+            var regionInfo = AmongUsServerSerialization.Deserialization(regionInfoString);
+            Servers = new ObservableCollection<Server?>(regionInfo?.Regions!);
             Servers.CollectionChanged += OnServersChanged;
         }
 
@@ -56,19 +53,17 @@ public sealed partial class Page_Server : Page
         Unloaded += OnUnloaded;
     }
 
-    public static AmongUsServerSerialization? ServerSerialization { get; private set; }
-
     private void OnUnloaded(object sender, RoutedEventArgs routedEventArgs)
     {
-        using var file = File.Open(RegionConfigPath, FileMode.OpenOrCreate, FileAccess.Write);
-        using var Writer = new StreamWriter(file, Encoding.UTF8);
-        Writer.WriteAsync(RegionText);
+        _writer ??= new StreamWriter(File.Open(RegionConfigPath, FileMode.OpenOrCreate, FileAccess.ReadWrite));
+        _writer.Write(RegionText);
+        _writer.Close();
     }
 
     private void OnServersChanged(object? sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
     {
         _Servers = Servers;
-        RegionText = ServerSerialization?.Serialization(Servers.ToList())!;
+        RegionText = AmongUsServerSerialization.Serialization(Servers.ToList());
     }
 
     private void ServersList_OnItemClick(object sender, ItemClickEventArgs e)
@@ -81,50 +76,14 @@ public sealed partial class Page_Server : Page
         if (CurrentServer == null)
             return;
 
-        ServerEditWindow.OpenWindow(CurrentServer, ServerSerialization);
+        ServerEditWindow.OpenWindow(CurrentServer);
     }
 
     private void OpenPublicServerWindow(object sender, RoutedEventArgs e)
     {
-        DownloadPublicServers();
-        PublicServerWindow.OpenWindow(this);
+        PublicServerWindow.OpenWindow();
     }
-
-    private void DownloadPublicServers(bool gitee = false)
-    {
-        if (PublicServers != null) return;
-        if (Downloaded) return;
-        
-        var GiteeUrl = new Uri("https://gitee.com/bilibili_MC/Resources/raw/main/PublicServerList.json");
-        var GithubUrl =
-            new Uri("https://raw.githubusercontent.com/NextAmongUsLauncher/Resources/main/PublicServerList.json");
-
-        var url = gitee ? GiteeUrl : GithubUrl;
-
-        string Document;
-
-        try
-        {
-            var httpClientHandler = new HttpClientHandler();
-            httpClientHandler.ServerCertificateCustomValidationCallback =
-                (message, cert, chain, sslPolicyErrors) => true;
-            using var client = new HttpClient(httpClientHandler);
-            var res = client.GetAsync(url);
-            Document = res.Result.Content.ReadAsStringAsync().Result;
-        }
-        catch (Exception e)
-        {
-            Log.Exception(e);
-            if (gitee)
-                return;
-            DownloadPublicServers(true);
-            return;
-        }
-
-        var document = JsonDocument.Parse(Document);
-        PublicServers = document.RootElement.EnumerateArray().GetServerFormArray();
-        Downloaded = true;
-    }
+    
 
     private void RemoveButton_Click(object sender, RoutedEventArgs e)
     {
@@ -143,10 +102,10 @@ public sealed partial class Page_Server : Page
             ViewMode = PickerViewMode.Thumbnail,
             SuggestedStartLocation = PickerLocationId.PicturesLibrary
         };
+        
+        InitializeWithWindow.Initialize(picker, Instance.MainWindow.HWND);
         picker.FileTypeFilter.Add(".json");
         var file = await picker.PickSingleFileAsync();
-        if (file == null)
-            return;
         
         foreach (var server 
                  in 

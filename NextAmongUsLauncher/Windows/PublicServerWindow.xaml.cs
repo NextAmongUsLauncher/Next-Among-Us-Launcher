@@ -7,42 +7,27 @@ using NextAmongUsLauncher.Helper;
 using NextAmongUsLauncher.Pages;
 
 namespace NextAmongUsLauncher.Windows;
-/*
- * 啊啊啊啊啊
- * 啊啊啊啊
- * 写出了屎山代码
- * 还有一堆奇奇怪怪的bug
- */
+
 public partial class PublicServerWindow : Window
 {
-    public Page_Server _pageServer;
-
-    public Server _server;
-    public ObservableCollection<Server> Servers;
+    private ObservableCollection<Server> Servers;
 
     public PublicServerWindow()
     {
         AppWindow.Title = "公共服务器导入";
         Instance.AllWindow.Add(this);
-        AppWindow.Closing += (sender, args) => Instance.AllWindow.Remove(this);
-        AppWindow.Destroying += (sender, args) => Instance.AllWindow.Remove(this);
         InitializeComponent();
     }
 
-    public PublicServerWindow(Page_Server pageServer) : this()
+    public void Set()
     {
-        Set(pageServer);
-    }
-
-    public void Set(Page_Server pageServer)
-    {
-        _pageServer = pageServer;
-        Servers = new ObservableCollection<Server>(pageServer.PublicServers!.Where(Find));
+        if (Instance.PublicServers.Count == 0) return;
+        Servers = new ObservableCollection<Server>(Instance.PublicServers.Where(Find));
     }
 
     private bool Find(Server server)
     {
-        return Page_Server.Servers.All(server2 => Find(server, server2));
+        return Page_Server.Servers.All(server2 => Find(server, server2!));
     }
 
     private bool Find(Server server, Server server2)
@@ -65,18 +50,17 @@ public partial class PublicServerWindow : Window
         AppWindow.Destroy();
     }
 
-    public static PublicServerWindow OpenWindow(Page_Server pageServer)
+    public static void OpenWindow()
     {
         if (Instance.AllWindow.Any(n => n is PublicServerWindow))
         {
             var window = Instance.AllWindow.FirstOrDefault(n => n is PublicServerWindow) as PublicServerWindow;
-            window?.Set(pageServer);
+            window!.Set();
             window.WindowTop();
-            return window;
         }
 
-        var NewWindow = new PublicServerWindow(pageServer);
+        var NewWindow = new PublicServerWindow();
+        NewWindow.Set();
         NewWindow.Activate();
-        return NewWindow;
     }
 }

@@ -1,3 +1,4 @@
+using System.Reflection;
 using EverythingSharp;
 
 namespace NextAmongUsLauncher.Core.Utils;
@@ -36,5 +37,6 @@ public class EverythingUtils
 
         var EverythingStream = client.GetStreamAsync(new Uri(url)).Result;
         EverythingStream.CopyToAsync(stream);
+        Assembly.LoadFile(FilePath);
     }
 }

@@ -6,94 +6,51 @@ using NextAmongUsLauncher.Core.Base;
 
 namespace NextAmongUsLauncher.Core.Utils;
 
-public class AmongUsServerSerialization
+public static class AmongUsServerSerialization
 {
-    [JsonIgnore] public readonly JsonSerializerOptions _SerializerOptions = new()
+    public static readonly JsonSerializerOptions _SerializerOptions = new()
     {
         Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs)
     };
 
-    public AmongUsServerSerialization(string? serverConfigString)
+    public static int CurrentRegionIdx;
+
+    public static string Serialization(List<Server?> allServers)
     {
-        ServerConfigString = serverConfigString;
-    }
-
-    public AmongUsServerSerialization()
-    {
-    }
-
-
-    [JsonPropertyOrder(0)] public int CurrentRegionIdx { get; private set; }
-
-
-    [JsonIgnore] public int ServerCount { get; private set; }
-
-
-    [JsonIgnore] public string? ServerConfigString { get; private set; }
-
-
-    [JsonPropertyName("Regions")]
-    [JsonPropertyOrder(1)]
-    public List<Server>? AllServer { get; private set; }
-
-
-    public string Serialization(List<Server> allServers)
-    {
-        var ser = new AmongUsServerSerialization();
-        ser.AllServer = allServers;
-        ser.CurrentRegionIdx = CurrentRegionIdx;
+        var ser = new RegionInfo
+        {
+            Regions = allServers,
+            CurrentRegionIdx = CurrentRegionIdx
+        };
         return JsonSerializer.Serialize(ser, _SerializerOptions);
     }
 
-    public void Deserialization(string? serverConfigString = null)
+    public static RegionInfo? Deserialization(string serverConfigString)
     {
-        if (serverConfigString != null)
-            ServerConfigString = serverConfigString;
-
-        if (ServerConfigString == null)
-            return;
-
-        DeserializationDocument(JsonDocument.Parse(ServerConfigString));
+        return JsonSerializer.Deserialize<RegionInfo>(serverConfigString);
     }
 
-    internal AmongUsServerSerialization DeserializationDocument(JsonDocument document)
-    {
-        var root = document.RootElement;
-        var regions = root.GetProperty("Regions").EnumerateArray();
-
-        CurrentRegionIdx = root.GetProperty("CurrentRegionIdx").GetInt32();
-        ServerCount = regions.Count();
-        AllServer = new List<Server>(ServerCount);
-
-        AllServer.AddRange(regions.GetServerFormArray());
-
-        return this;
-    }
-
-    public void Read(Stream stream)
+    public static string Read(this Stream stream)
     {
         using TextReader reader = new StreamReader(stream);
-        ServerConfigString = reader.ReadToEnd();
+        return reader.ReadToEnd();
     }
 
-    public void Read(string path)
+    public static string Read(string path)
     {
-        if (!File.Exists(path))
-            return;
-
-        Read(File.OpenRead(path));
+        return !File.Exists(path) ? string.Empty : Read(File.OpenRead(path));
     }
 
-    public void Write(Stream stream)
+    public static void Write(this Stream stream, RegionInfo regionInfo)
     {
         using TextWriter writer = new StreamWriter(stream);
-        writer.Write(ServerConfigString);
+        writer.Write(regionInfo.ToString());
     }
 
-    public void Write(string path)
+    public static void Write(string path, RegionInfo regionInfo)
     {
         using var file = File.Open(path, FileMode.OpenOrCreate, FileAccess.Write);
-        Write(file);
+        Write(file, regionInfo);
     }
 }
 

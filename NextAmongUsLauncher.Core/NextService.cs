@@ -76,6 +76,7 @@ public class NextService
                 
                 // 实例
                 Service.AddSingleton<ModDownloadService>();
+                Service.AddSingleton<LauncherUpdateService>();
             }
 
             _serviceProvider = Service.BuildServiceProvider();

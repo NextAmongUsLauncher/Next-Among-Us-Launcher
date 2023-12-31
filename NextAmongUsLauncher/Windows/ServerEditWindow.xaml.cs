@@ -10,10 +10,9 @@ namespace NextAmongUsLauncher.Windows;
 
 public partial class ServerEditWindow : Window
 {
-    private ItemClickEventArgs _Item;
-    private AmongUsServerSerialization _serialization;
+    private ItemClickEventArgs? _Item;
 
-    private Server CurrentServer;
+    private Server? CurrentServer;
 
     public ServerEditWindow()
     {
@@ -26,24 +25,19 @@ public partial class ServerEditWindow : Window
         Current = this;
     }
 
-    public new static ServerEditWindow Current { get; private set; }
+    public new static ServerEditWindow? Current { get; private set; }
 
-    public void Set(AmongUsServerSerialization serialization)
-    {
-        _serialization = serialization;
-    }
-
-    public void Set(ItemClickEventArgs e)
+    public void Set(ItemClickEventArgs? e)
     {
         _Item = e;
-        CurrentServer = _Item.ClickedItem as Server;
+        CurrentServer = _Item?.ClickedItem as Server;
         ServerName.Text = CurrentServer!.Name;
     }
 
-    public void Set(Server server)
+    public void Set(Server? server)
     {
         CurrentServer = server;
-        ServerName.Text = CurrentServer.Name;
+        ServerName.Text = CurrentServer?.Name;
     }
 
     private void OnDestroy(AppWindow appWindow, object sender)
@@ -52,12 +46,11 @@ public partial class ServerEditWindow : Window
         Current = null;
     }
 
-    public static ServerEditWindow OpenWindow(Server server = null, AmongUsServerSerialization serialization = null)
+    public static ServerEditWindow? OpenWindow(Server? server = null)
     {
         if (Current != null)
         {
             Current.Set(server);
-            Current.Set(serialization);
 
             if (Current.AppWindow.IsVisible) return Current;
             Current.AppWindow.Show();
@@ -66,7 +59,7 @@ public partial class ServerEditWindow : Window
             return Current;
         }
 
-        ServerEditWindow EditWindow;
+        ServerEditWindow? EditWindow;
         if (Instance.AllWindow.Any(n => n is ServerEditWindow))
         {
             EditWindow = Instance.AllWindow.First(n => n is ServerEditWindow) as ServerEditWindow;
@@ -79,7 +72,6 @@ public partial class ServerEditWindow : Window
         }
 
         EditWindow.Set(server);
-        EditWindow.Set(serialization);
         EditWindow.AppWindow.MoveInZOrderAtTop();
 
         return EditWindow;

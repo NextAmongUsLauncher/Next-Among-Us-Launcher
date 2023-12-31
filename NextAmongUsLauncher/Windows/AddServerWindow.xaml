@@ -14,13 +14,15 @@
     </Window.SystemBackdrop>
     
     <Grid RowDefinitions="Auto, *">
-        <TextBox x:Name="ServerName_TextBox" PlaceholderText="服务器名称" TextChanged="ServerName_TextBox_OnTextChanged" />
-        <RadioButtons x:Name="ConnectionProtocolButtons" Header="连接协议:">
-            <RadioButton Content="Http协议" Tag="http"/>
-            <RadioButton Content="Https协议" Tag="https"/>
-        </RadioButtons>
-        <TextBox x:Name="ServerIp_TextBox" PlaceholderText="服务器IP" TextChanged="ServerIp_TextBox_OnTextChanged"/>
-        <TextBox x:Name="ServerPort_TextBox" PlaceholderText="服务器端口" TextChanged="ServerPort_TextBox_OnTextChanged"/>
-        <Button x:Name="AddButton" Click="AddButton_OnClick"/>
+        <StackPanel  Orientation="Vertical">
+            <TextBox x:Name="ServerName_TextBox" PlaceholderText="服务器名称" TextChanged="ServerName_TextBox_OnTextChanged" />
+            <RadioButtons x:Name="ConnectionProtocolButtons" Header="连接协议:">
+                <RadioButton Content="Http协议" Tag="http"/>
+                <RadioButton Content="Https协议" Tag="https"/>
+            </RadioButtons>
+            <TextBox x:Name="ServerIp_TextBox" PlaceholderText="服务器IP" TextChanged="ServerIp_TextBox_OnTextChanged"/>
+            <TextBox x:Name="ServerPort_TextBox" PlaceholderText="服务器端口" TextChanged="ServerPort_TextBox_OnTextChanged"/>
+            <Button x:Name="AddButton" Click="AddButton_OnClick"/>
+        </StackPanel>
     </Grid>
 </Window>

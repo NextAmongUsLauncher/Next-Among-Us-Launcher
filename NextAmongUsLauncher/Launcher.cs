@@ -1,10 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Reflection;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using NextAmongUsLauncher.Core;
+using NextAmongUsLauncher.Core.Base;
 using NextAmongUsLauncher.Core.NextConsole;
+using NextAmongUsLauncher.Core.Utils;
 
 namespace NextAmongUsLauncher;
 
@@ -18,9 +23,9 @@ public sealed class Launcher
     /// <summary>
     ///     主窗口
     /// </summary>
-    public readonly Window MainWindow;
+    public readonly MainWindow MainWindow;
 
-    public Launcher(Window Window)
+    public Launcher(MainWindow Window)
     {
         Assembly.GetExecutingAssembly().GetName().Version = LauncherVersion;
         Instance = this;
@@ -64,6 +69,8 @@ public sealed class Launcher
     ///     启动器服务
     /// </summary>
     public NextService LauncherService { get; private set; }
+    
+    public List<Server> PublicServers;
 
     private void Start()
     {
@@ -74,9 +81,11 @@ public sealed class Launcher
         LauncherService = NextService.GetInstance(true);
         ConsoleManager = new ConsoleManager("Next Among Us Launcher");
         GameManager = new GameManager();
+        
 
         Logger.Initialize(IsDev, ConsoleManager);
         GameManager.Init();
+        Task.Factory.StartNew(DownloadPublicServers);
     }
 
     public void Close()
@@ -86,5 +95,31 @@ public sealed class Launcher
     internal void SetDev(bool dev)
     {
         IsDev = dev;
+    }
+    
+    private void DownloadPublicServers()
+    {
+        var Url = new Uri("http://server.aumod.wiki:5244/d/Update/serverList.json");
+
+        string? Document;
+
+        try
+        {
+            var httpClientHandler = new HttpClientHandler();
+            httpClientHandler.ServerCertificateCustomValidationCallback =
+                (message, cert, chain, sslPolicyErrors) => true;
+            using var client = new HttpClient(httpClientHandler);
+            var res = client.GetAsync(Url);
+            Document = res.Result.Content.ReadAsStringAsync().Result;
+            Console.WriteLine(Document);
+        }
+        catch (Exception e)
+        {
+            Log.Exception(e);
+            return;
+        }
+
+        var document = JsonDocument.Parse(Document);
+        PublicServers = document.RootElement.EnumerateArray().GetServerFormArray();
     }
 }

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextAmongUsLauncher", "NextAmongUsLauncher\NextAmongUsLauncher.csproj", "{50A7162F-4EC1-4530-B07F-B3DB2E53A3EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NextAmongUsLauncher", "NextAmongUsLauncher\NextAmongUsLauncher.csproj", "{50A7162F-4EC1-4530-B07F-B3DB2E53A3EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextAmongUsLauncher.Core", "NextAmongUsLauncher.Core\NextAmongUsLauncher.Core.csproj", "{C6871A71-20EC-4800-A5BF-292683FE2DB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NextAmongUsLauncher.Core", "NextAmongUsLauncher.Core\NextAmongUsLauncher.Core.csproj", "{C6871A71-20EC-4800-A5BF-292683FE2DB6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,6 +52,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_AutoCreateNewLanguageFiles = False
 		SolutionGuid = {367FFFD7-F62C-4E1B-840B-17324079F63C}
 	EndGlobalSection
 EndGlobal

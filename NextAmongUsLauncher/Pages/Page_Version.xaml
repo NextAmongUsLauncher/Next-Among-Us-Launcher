@@ -27,7 +27,7 @@
 
                 <ListView.ContextFlyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem Icon="Play" Text="启动" Tag="Run" />
+                        <MenuFlyoutItem Icon="Play" Text="" Tag="Run" />
                         <MenuFlyoutItem Icon="Folder" Text="浏览目录" Click="OepnLocation_Click" Tag="OepnLocation" />
                         <MenuFlyoutItem Icon="Edit" Text="重命名" Tag="Rename" />
                         <MenuFlyoutSeparator />
